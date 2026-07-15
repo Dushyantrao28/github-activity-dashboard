@@ -85,6 +85,8 @@ export interface ContributionWeek {
 
 export interface ContributionData {
   totalContributions: number;
+  longestStreak: number;
+  currentStreak: number;
   weeks: ContributionWeek[];
 }
 

@@ -1,8 +1,8 @@
-import type { GithubUser, GithubRepo } from '@/types/github';
-import { Star, GitFork, BookOpen, FileCode2 } from 'lucide-react';
+import type { GithubUser, GithubRepo, ContributionData } from '@/types/github';
+import { Star, GitFork, BookOpen, Flame } from 'lucide-react';
 import { formatNumber } from '@/lib/utils';
 
-export function StatsGrid({ user, repos }: { user: GithubUser; repos?: GithubRepo[] }) {
+export function StatsGrid({ user, repos, contributions }: { user: GithubUser; repos?: GithubRepo[]; contributions?: ContributionData }) {
   const totalStars = repos?.reduce((a, r) => a + r.stargazers_count, 0) ?? 0;
   const totalForks = repos?.reduce((a, r) => a + r.forks_count, 0) ?? 0;
 
@@ -10,7 +10,7 @@ export function StatsGrid({ user, repos }: { user: GithubUser; repos?: GithubRep
     { icon: Star, label: 'Total Stars', value: formatNumber(totalStars), color: '#e3b341', topBar: '#e3b341' },
     { icon: GitFork, label: 'Total Forks', value: formatNumber(totalForks), color: '#58a6ff', topBar: '#58a6ff' },
     { icon: BookOpen, label: 'Repositories', value: formatNumber(user.public_repos), color: '#bc8cff', topBar: '#bc8cff' },
-    { icon: FileCode2, label: 'Public Gists', value: formatNumber(user.public_gists), color: '#3fb950', topBar: '#3fb950' },
+    { icon: Flame, label: 'Longest Streak', value: contributions ? `${contributions.longestStreak} days` : '—', color: '#ff7b72', topBar: '#ff7b72' },
   ];
 
   return (

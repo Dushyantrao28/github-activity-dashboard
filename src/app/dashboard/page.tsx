@@ -56,7 +56,9 @@ export default function DashboardPage() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
                 {[1,2,3,4].map(i => <div key={i} className="skeleton" style={{ height: 100, borderRadius: 12 }} />)}
               </div>
-            ) : user ? <StatsGrid user={user} repos={repos} /> : null}
+            ) : user ? (
+              <StatsGrid user={user} repos={repos} contributions={contributions} />
+            ) : null}
           </div>
         </div>
 

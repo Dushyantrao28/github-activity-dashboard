@@ -64,15 +64,22 @@ export async function fetchContributions(
   }
 
   return {
-    totalContributions: calendar.totalContributions,
-    weeks: calendar.weeks.map((w: any) => ({
-      firstDay: w.firstDay,
-      days: w.contributionDays.map((d: any) => ({
-        date: d.date,
-        count: d.contributionCount,
-        level: LEVEL_MAP[d.contributionLevel] ?? 0,
-      })),
+  const weeks = calendar.weeks.map((w: any) => ({
+    firstDay: w.firstDay,
+    days: w.contributionDays.map((d: any) => ({
+      date: d.date,
+      count: d.contributionCount,
+      level: LEVEL_MAP[d.contributionLevel] ?? 0,
     })),
+  }));
+
+  const { longestStreak, currentStreak } = calculateStreaks(weeks);
+
+  return {
+    totalContributions: calendar.totalContributions,
+    longestStreak,
+    currentStreak,
+    weeks,
   };
 }
 
@@ -108,5 +115,31 @@ export function buildContributionsFromEvents(
   }
 
   const totalContributions = Object.values(countByDate).reduce((a, b) => a + b, 0);
-  return { totalContributions, weeks };
+  const { longestStreak, currentStreak } = calculateStreaks(weeks);
+  return { totalContributions, longestStreak, currentStreak, weeks };
+}
+
+function calculateStreaks(weeks: ContributionData['weeks']) {
+  let longestStreak = 0;
+  let temp = 0;
+  const today = new Date().toISOString().split('T')[0];
+  const allDays = weeks.flatMap(w => w.days).filter(d => d.date <= today);
+  
+  for (let i = 0; i < allDays.length; i++) {
+    if (allDays[i].count > 0) {
+      temp++;
+      longestStreak = Math.max(longestStreak, temp);
+    } else {
+      temp = 0;
+    }
+  }
+  
+  let currentStreak = 0;
+  for (let i = allDays.length - 1; i >= 0; i--) {
+    if (i === allDays.length - 1 && allDays[i].count === 0) continue;
+    if (allDays[i].count > 0) currentStreak++;
+    else break;
+  }
+  
+  return { longestStreak, currentStreak };
 }
