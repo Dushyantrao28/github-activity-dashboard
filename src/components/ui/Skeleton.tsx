@@ -1,34 +1,25 @@
 import { cn } from '@/lib/utils';
 
-interface SkeletonProps {
-  className?: string;
-}
-
-export function Skeleton({ className }: SkeletonProps) {
-  return (
-    <div
-      className={cn('shimmer rounded-lg bg-slate-800', className)}
-      aria-hidden="true"
-    />
-  );
+export function Skeleton({ className, style }: { className?: string; style?: React.CSSProperties }) {
+  return <div className={cn('shimmer rounded-xl', className)} aria-hidden="true" style={{ background: '#161b22', ...style }} />;
 }
 
 export function ProfileCardSkeleton() {
   return (
-    <div className="glass rounded-2xl p-6 animate-fade-in">
-      <div className="flex items-start gap-5">
-        <Skeleton className="w-20 h-20 rounded-full flex-shrink-0" />
-        <div className="flex-1 space-y-3">
-          <Skeleton className="h-6 w-48" />
-          <Skeleton className="h-4 w-32" />
-          <Skeleton className="h-4 w-64" />
+    <div className="card" style={{ padding: '20px' }}>
+      <div className="flex items-start gap-4">
+        <Skeleton className="w-16 h-16 rounded-2xl flex-shrink-0" />
+        <div className="flex-1 space-y-2">
+          <Skeleton className="h-4 w-36" />
+          <Skeleton className="h-3 w-24" />
+          <Skeleton className="h-3 w-48" />
         </div>
       </div>
-      <div className="mt-6 grid grid-cols-3 gap-4">
-        {[1,2,3].map((i) => (
-          <div key={i} className="space-y-2">
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-3 w-16" />
+      <div className="mt-5 pt-4 grid grid-cols-3 gap-3" style={{ borderTop: '1px solid #21262d' }}>
+        {[1,2,3].map(i => (
+          <div key={i} className="text-center space-y-1.5">
+            <Skeleton className="h-6 w-12 mx-auto" />
+            <Skeleton className="h-2.5 w-16 mx-auto" />
           </div>
         ))}
       </div>
@@ -38,14 +29,14 @@ export function ProfileCardSkeleton() {
 
 export function RepoCardSkeleton() {
   return (
-    <div className="glass rounded-2xl p-5 space-y-3">
-      <Skeleton className="h-5 w-40" />
-      <Skeleton className="h-4 w-full" />
-      <Skeleton className="h-4 w-3/4" />
-      <div className="flex gap-3 pt-1">
-        <Skeleton className="h-5 w-16" />
-        <Skeleton className="h-5 w-12" />
-        <Skeleton className="h-5 w-20" />
+    <div className="card" style={{ padding: '16px' }}>
+      <Skeleton className="h-4 w-32 mb-3" />
+      <Skeleton className="h-3 w-full mb-2" />
+      <Skeleton className="h-3 w-3/4 mb-4" />
+      <div className="flex gap-2 pt-3" style={{ borderTop: '1px solid #21262d' }}>
+        <Skeleton className="h-3 w-16" />
+        <Skeleton className="h-3 w-10" />
+        <Skeleton className="h-3 w-10" />
       </div>
     </div>
   );
@@ -53,18 +44,20 @@ export function RepoCardSkeleton() {
 
 export function ChartSkeleton() {
   return (
-    <div className="glass rounded-2xl p-6 space-y-4">
-      <Skeleton className="h-6 w-48" />
-      <Skeleton className="h-64 w-full rounded-xl" />
+    <div className="card" style={{ padding: '20px 24px' }}>
+      <Skeleton className="h-4 w-40 mb-1" />
+      <Skeleton className="h-3 w-28 mb-5" />
+      <Skeleton className="w-full rounded-xl" style={{ height: '220px' }} />
     </div>
   );
 }
 
 export function HeatmapSkeleton() {
   return (
-    <div className="glass rounded-2xl p-6 space-y-4">
-      <Skeleton className="h-6 w-64" />
-      <Skeleton className="h-32 w-full rounded-xl" />
+    <div className="card" style={{ padding: '20px 24px' }}>
+      <Skeleton className="h-4 w-48 mb-1" />
+      <Skeleton className="h-3 w-36 mb-5" />
+      <Skeleton className="w-full rounded-xl" style={{ height: '120px' }} />
     </div>
   );
 }

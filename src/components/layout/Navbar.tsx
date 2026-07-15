@@ -4,24 +4,31 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
-import {
-  Zap, LayoutDashboard, User, GitBranch, BarChart3,
-  LogOut, Search, Menu, X, ChevronDown
-} from 'lucide-react';
+import { LayoutDashboard, User, GitBranch, BarChart3, LogOut, Search, Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
+
+function GitPulseLogo() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="3" fill="#38bdf8"/>
+      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="3 2"/>
+      <path d="M12 7v5l3 3" stroke="#c084fc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/profile', label: 'Profile', icon: User },
   { href: '/repos', label: 'Repos', icon: GitBranch },
-  { href: '/charts', label: 'Charts', icon: BarChart3 },
+  { href: '/charts', label: 'Analytics', icon: BarChart3 },
 ];
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
-  const [searchQuery, setSearchQuery] = useState('');
+  const [search, setSearch] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
 
@@ -30,23 +37,25 @@ export function Navbar() {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/profile?user=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
+    if (search.trim()) {
+      router.push(`/profile?user=${encodeURIComponent(search.trim())}`);
+      setSearch('');
+      setMobileOpen(false);
     }
   };
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-slate-700/50">
+      <nav className="fixed top-0 left-0 right-0 z-50" style={{ background: 'rgba(6,9,18,0.92)', borderBottom: '1px solid #21262d', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-[58px]">
+
             {/* Logo */}
-            <Link href="/dashboard" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-sky-400 to-purple-500 flex items-center justify-center shadow-md group-hover:shadow-sky-500/30 transition-all duration-200">
-                <Zap className="w-4 h-4 text-white" />
+            <Link href="/dashboard" className="flex items-center gap-2.5 group flex-shrink-0">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0f172a,#1e1b4b)', border: '1px solid rgba(56,189,248,0.2)' }}>
+                <GitPulseLogo />
               </div>
-              <span className="text-base font-bold text-white tracking-tight hidden sm:block">
+              <span className="text-[15px] font-bold tracking-tight hidden sm:block" style={{ color: '#e2e8f0' }}>
                 Git<span className="gradient-text">Pulse</span>
               </span>
             </Link>
@@ -56,128 +65,106 @@ export function Navbar() {
               {navItems.map((item) => {
                 const active = pathname.startsWith(item.href);
                 return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn(
-                      'flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
-                      active
-                        ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-                    )}
-                  >
-                    <item.icon className="w-4 h-4" />
+                  <Link key={item.href} href={item.href} className={cn('nav-item', active && 'active')}>
+                    <item.icon size={15} />
                     {item.label}
                   </Link>
                 );
               })}
             </div>
 
-            {/* Search + User */}
-            <div className="flex items-center gap-3">
+            {/* Right side */}
+            <div className="flex items-center gap-2">
               {/* Search */}
-              <form onSubmit={handleSearch} className="hidden sm:block relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <form onSubmit={handleSearch} className="hidden sm:flex items-center relative">
+                <Search size={14} className="absolute left-3 pointer-events-none" style={{ color: '#3d444d' }} />
                 <input
                   id="global-search-input"
                   type="text"
-                  placeholder="Search GitHub user..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-4 py-2 bg-slate-800/60 border border-slate-700 rounded-xl text-sm text-slate-300 placeholder-slate-600 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/20 transition-all w-48 focus:w-56"
+                  placeholder="Search user..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="input-dark pl-9 pr-3 py-[7px] text-sm w-40 focus:w-52 transition-all"
+                  style={{ fontSize: '13px' }}
                 />
               </form>
 
-              {/* User Menu */}
+              {/* User dropdown */}
               {user && (
                 <div className="relative">
                   <button
                     id="user-menu-btn"
                     onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-slate-700/50 transition-colors"
+                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-[#161b22] transition-colors"
                   >
                     {user.image ? (
-                      <img src={user.image} alt={user.name ?? 'User'} className="w-7 h-7 rounded-full ring-2 ring-slate-600" />
+                      <img src={user.image} alt={user.name ?? ''} className="w-7 h-7 rounded-full" style={{ border: '2px solid #30363d' }} />
                     ) : (
-                      <div className="w-7 h-7 rounded-full bg-gradient-to-br from-sky-400 to-purple-500 flex items-center justify-center">
-                        <span className="text-xs font-bold text-white">{user.name?.[0] ?? 'U'}</span>
+                      <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: 'linear-gradient(135deg,#1d4ed8,#7c3aed)', color: 'white' }}>
+                        {user.name?.[0] ?? 'U'}
                       </div>
                     )}
-                    <ChevronDown className={cn("w-3 h-3 text-slate-400 transition-transform", userMenuOpen && "rotate-180")} />
+                    <span className="text-xs hidden sm:block" style={{ color: '#7d8590' }}>{login}</span>
+                    <ChevronDown size={12} className={cn('transition-transform', userMenuOpen && 'rotate-180')} style={{ color: '#7d8590' }} />
                   </button>
 
                   {userMenuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-52 glass rounded-xl border border-slate-700 shadow-xl py-1 animate-fade-in">
-                      <div className="px-4 py-3 border-b border-slate-700/50">
-                        <p className="text-sm font-medium text-white truncate">{user.name}</p>
-                        <p className="text-xs text-slate-500 truncate">@{login}</p>
+                    <div className="absolute right-0 top-full mt-2 w-52 card animate-slide-down" style={{ padding: '6px' }}>
+                      <div style={{ padding: '10px 12px 12px', borderBottom: '1px solid #21262d', marginBottom: '4px' }}>
+                        <p className="text-sm font-semibold" style={{ color: '#e2e8f0' }}>{user.name}</p>
+                        <p className="text-xs" style={{ color: '#7d8590' }}>@{login}</p>
                       </div>
-                      <Link
-                        href="/profile"
-                        className="flex items-center gap-2 px-4 py-2.5 text-sm text-slate-300 hover:text-white hover:bg-slate-700/50 transition-colors"
-                        onClick={() => setUserMenuOpen(false)}
+                      <Link href="/profile" onClick={() => setUserMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm hover:bg-[#161b22] transition-colors"
+                        style={{ color: '#7d8590' }}
                       >
-                        <User className="w-4 h-4" />
-                        My Profile
+                        <User size={14} /> View Profile
                       </Link>
-                      <button
-                        id="logout-btn"
-                        onClick={() => signOut({ callbackUrl: '/login' })}
-                        className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+                      <button id="logout-btn" onClick={() => signOut({ callbackUrl: '/login' })}
+                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm hover:bg-red-500/10 transition-colors"
+                        style={{ color: '#f85149' }}
                       >
-                        <LogOut className="w-4 h-4" />
-                        Sign out
+                        <LogOut size={14} /> Sign out
                       </button>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* Mobile menu button */}
-              <button
-                id="mobile-menu-btn"
-                onClick={() => setMobileOpen(!mobileOpen)}
-                className="md:hidden p-2 text-slate-400 hover:text-white transition-colors"
+              <button id="mobile-menu-btn" onClick={() => setMobileOpen(!mobileOpen)}
+                className="md:hidden p-2 rounded-lg hover:bg-[#161b22] transition-colors"
+                style={{ color: '#7d8590' }}
               >
-                {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                {mobileOpen ? <X size={18} /> : <Menu size={18} />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile nav */}
+        {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden border-t border-slate-700/50 py-3 px-4 space-y-1 animate-fade-in">
-            {/* Mobile search */}
+          <div className="md:hidden animate-slide-down" style={{ borderTop: '1px solid #21262d', padding: '12px 16px', background: 'rgba(6,9,18,0.98)' }}>
             <form onSubmit={handleSearch} className="relative mb-3">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#3d444d' }} />
               <input
-                type="text"
-                placeholder="Search GitHub user..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 pr-4 py-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-sm text-slate-300 placeholder-slate-600 focus:outline-none focus:border-sky-500/50"
+                type="text" placeholder="Search GitHub user..."
+                value={search} onChange={(e) => setSearch(e.target.value)}
+                className="input-dark w-full pl-9 pr-3 py-2.5 text-sm"
               />
             </form>
-            {navItems.map((item) => {
-              const active = pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMobileOpen(false)}
-                  className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors',
-                    active
-                      ? 'bg-sky-500/10 text-sky-400'
-                      : 'text-slate-400 hover:text-white hover:bg-slate-700/50'
-                  )}
-                >
-                  <item.icon className="w-5 h-5" />
-                  {item.label}
-                </Link>
-              );
-            })}
+            <div className="space-y-1">
+              {navItems.map((item) => {
+                const active = pathname.startsWith(item.href);
+                return (
+                  <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                    className={cn('nav-item w-full', active && 'active')}
+                    style={{ padding: '10px 14px' }}
+                  >
+                    <item.icon size={16} /> {item.label}
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         )}
       </nav>

@@ -1,70 +1,70 @@
 'use client';
 
-import { Search, SortAsc, Filter } from 'lucide-react';
-import { getLanguageColor } from '@/lib/utils';
+import { Search, SlidersHorizontal } from 'lucide-react';
 
 interface FilterBarProps {
   search: string;
-  onSearchChange: (v: string) => void;
+  onSearch: (v: string) => void;
   language: string;
-  onLanguageChange: (v: string) => void;
+  onLanguage: (v: string) => void;
   sort: string;
-  onSortChange: (v: string) => void;
+  onSort: (v: string) => void;
   languages: string[];
+  totalCount: number;
+  filteredCount: number;
 }
 
-export function FilterBar({
-  search, onSearchChange,
-  language, onLanguageChange,
-  sort, onSortChange,
-  languages,
-}: FilterBarProps) {
+const SORT_OPTIONS = [
+  { value: 'updated', label: 'Recently Updated' },
+  { value: 'stars', label: 'Most Stars' },
+  { value: 'forks', label: 'Most Forks' },
+  { value: 'name', label: 'Name A–Z' },
+  { value: 'size', label: 'Largest' },
+];
+
+export function FilterBar({ search, onSearch, language, onLanguage, sort, onSort, languages, totalCount, filteredCount }: FilterBarProps) {
   return (
-    <div className="flex flex-col sm:flex-row gap-3">
+    <div className="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
       {/* Search */}
-      <div className="relative flex-1">
-        <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+      <div className="relative flex-1 min-w-0">
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#3d444d' }} />
         <input
-          id="repo-search-input"
+          id="repo-search"
           type="text"
           placeholder="Search repositories..."
           value={search}
-          onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full pl-10 pr-4 py-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-sm text-slate-300 placeholder-slate-600 focus:outline-none focus:border-sky-500/50 focus:ring-1 focus:ring-sky-500/20 transition-all"
+          onChange={(e) => onSearch(e.target.value)}
+          className="input-dark w-full pl-9 pr-4 py-2.5 text-sm"
         />
       </div>
 
-      {/* Language filter */}
-      <div className="relative">
-        <Filter className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+      <div className="flex gap-2 flex-shrink-0">
+        {/* Language filter */}
         <select
-          id="repo-language-filter"
+          id="language-filter"
           value={language}
-          onChange={(e) => onLanguageChange(e.target.value)}
-          className="pl-10 pr-8 py-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-sm text-slate-300 focus:outline-none focus:border-sky-500/50 appearance-none cursor-pointer min-w-[140px]"
+          onChange={(e) => onLanguage(e.target.value)}
+          className="input-dark px-3 py-2.5 text-sm pr-8 cursor-pointer appearance-none"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237d8590' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
         >
           <option value="">All Languages</option>
-          {languages.map((l) => (
-            <option key={l} value={l}>{l}</option>
-          ))}
+          {languages.map((l) => <option key={l} value={l}>{l}</option>)}
+        </select>
+
+        {/* Sort */}
+        <select
+          id="sort-select"
+          value={sort}
+          onChange={(e) => onSort(e.target.value)}
+          className="input-dark px-3 py-2.5 text-sm pr-8 cursor-pointer appearance-none"
+          style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237d8590' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center' }}
+        >
+          {SORT_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </div>
 
-      {/* Sort */}
-      <div className="relative">
-        <SortAsc className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-        <select
-          id="repo-sort-select"
-          value={sort}
-          onChange={(e) => onSortChange(e.target.value)}
-          className="pl-10 pr-8 py-2.5 bg-slate-800/60 border border-slate-700 rounded-xl text-sm text-slate-300 focus:outline-none focus:border-sky-500/50 appearance-none cursor-pointer min-w-[140px]"
-        >
-          <option value="updated">Recently Updated</option>
-          <option value="stars">Most Stars</option>
-          <option value="forks">Most Forks</option>
-          <option value="name">Name A–Z</option>
-          <option value="size">Largest</option>
-        </select>
+      <div className="text-xs flex-shrink-0" style={{ color: '#7d8590' }}>
+        <span style={{ color: '#e2e8f0', fontWeight: 600 }}>{filteredCount}</span> / {totalCount} repos
       </div>
     </div>
   );

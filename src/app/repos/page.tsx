@@ -2,8 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { Suspense } from 'react';
 import { AppShell } from '@/components/layout/AppShell';
 import { RepoCard } from '@/components/repos/RepoCard';
 import { FilterBar } from '@/components/repos/FilterBar';
@@ -11,67 +9,67 @@ import { RepoCardSkeleton } from '@/components/ui/Skeleton';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useGithubRepos } from '@/hooks/useGithubRepos';
 import { GitBranch, ChevronLeft, ChevronRight } from 'lucide-react';
-import type { GithubRepo } from '@/types/github';
 
-const PAGE_SIZE = 12;
+const PER_PAGE = 12;
 
-function ReposContent() {
+export default function ReposPage() {
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
   const login = (session as any)?.user?.login;
+  const { data: repos, isLoading } = useGithubRepos(login);
 
   const [search, setSearch] = useState('');
   const [language, setLanguage] = useState('');
-  const [sort, setSort] = useState('updated');
+  const [sort, setSort] = useState('stars');
   const [page, setPage] = useState(1);
 
-  const { data: repos, isLoading } = useGithubRepos(login, 100);
-
-  // Extract unique languages
   const languages = useMemo(() => {
-    if (!repos) return [];
-    return [...new Set(repos.map((r) => r.language).filter(Boolean) as string[])].sort();
+    const langs = new Set(repos?.map((r) => r.language).filter(Boolean) as string[]);
+    return Array.from(langs).sort();
   }, [repos]);
 
-  // Filter + sort
   const filtered = useMemo(() => {
-    let result = repos ?? [];
-    if (search) result = result.filter((r) => r.name.toLowerCase().includes(search.toLowerCase()) || (r.description ?? '').toLowerCase().includes(search.toLowerCase()));
-    if (language) result = result.filter((r) => r.language === language);
+    let list = repos ?? [];
+    if (search) list = list.filter((r) => r.name.toLowerCase().includes(search.toLowerCase()) || r.description?.toLowerCase().includes(search.toLowerCase()));
+    if (language) list = list.filter((r) => r.language === language);
     switch (sort) {
-      case 'stars': result = [...result].sort((a, b) => b.stargazers_count - a.stargazers_count); break;
-      case 'forks': result = [...result].sort((a, b) => b.forks_count - a.forks_count); break;
-      case 'name': result = [...result].sort((a, b) => a.name.localeCompare(b.name)); break;
-      case 'size': result = [...result].sort((a, b) => b.size - a.size); break;
-      case 'updated': default: result = [...result].sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
+      case 'stars': list = [...list].sort((a, b) => b.stargazers_count - a.stargazers_count); break;
+      case 'forks': list = [...list].sort((a, b) => b.forks_count - a.forks_count); break;
+      case 'updated': list = [...list].sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()); break;
+      case 'name': list = [...list].sort((a, b) => a.name.localeCompare(b.name)); break;
+      case 'size': list = [...list].sort((a, b) => b.size - a.size); break;
     }
-    return result;
+    return list;
   }, [repos, search, language, sort]);
 
-  const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const totalPages = Math.ceil(filtered.length / PER_PAGE);
+  const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
-  const handleSearchChange = (v: string) => { setSearch(v); setPage(1); };
-  const handleLanguageChange = (v: string) => { setLanguage(v); setPage(1); };
-  const handleSortChange = (v: string) => { setSort(v); setPage(1); };
+  const handleSearch = (v: string) => { setSearch(v); setPage(1); };
+  const handleLanguage = (v: string) => { setLanguage(v); setPage(1); };
+  const handleSort = (v: string) => { setSort(v); setPage(1); };
 
   return (
     <AppShell>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-6 animate-fade-in">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Repository Explorer</h1>
-          <p className="text-slate-500 text-sm mt-1">
-            {filtered.length} repositories found
-          </p>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+        {/* Header */}
+        <div className="mb-6 animate-fade-up">
+          <h1 className="text-2xl font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>Repository Explorer</h1>
+          <p className="text-sm mt-1" style={{ color: '#7d8590' }}>Browse, filter, and search all your public repositories</p>
         </div>
 
-        <FilterBar
-          search={search} onSearchChange={handleSearchChange}
-          language={language} onLanguageChange={handleLanguageChange}
-          sort={sort} onSortChange={handleSortChange}
-          languages={languages}
-        />
+        {/* Filter bar */}
+        <div className="mb-6">
+          <FilterBar
+            search={search} onSearch={handleSearch}
+            language={language} onLanguage={handleLanguage}
+            sort={sort} onSort={handleSort}
+            languages={languages}
+            totalCount={repos?.length ?? 0}
+            filteredCount={filtered.length}
+          />
+        </div>
 
+        {/* Grid */}
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {Array.from({ length: 12 }).map((_, i) => <RepoCardSkeleton key={i} />)}
@@ -81,61 +79,38 @@ function ReposContent() {
             {paginated.map((repo) => <RepoCard key={repo.id} repo={repo} />)}
           </div>
         ) : (
-          <EmptyState
-            icon={GitBranch}
-            title="No repositories found"
-            description={search || language ? "Try adjusting your filters" : "No public repositories found"}
-          />
+          <EmptyState icon={GitBranch} title="No repositories found" description="Try adjusting your search or filter" />
         )}
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-3">
-            <button
-              id="repos-prev-page"
-              onClick={() => setPage(p => Math.max(1, p - 1))}
-              disabled={page === 1}
-              className="flex items-center gap-1 px-4 py-2 glass rounded-xl text-sm text-slate-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4" /> Prev
+          <div className="flex items-center justify-center gap-2 mt-8">
+            <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
+              className="btn-secondary px-3 py-2 disabled:opacity-30" style={{ padding: '8px 12px' }}>
+              <ChevronLeft size={16} />
             </button>
             <div className="flex gap-1">
-              {Array.from({ length: Math.min(totalPages, 7) }).map((_, i) => {
-                const p = i + 1;
+              {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
+                const pg = page <= 4 ? i + 1 : page >= totalPages - 3 ? totalPages - 6 + i : page - 3 + i;
+                if (pg < 1 || pg > totalPages) return null;
                 return (
-                  <button
-                    key={p}
-                    onClick={() => setPage(p)}
-                    className={`w-9 h-9 rounded-xl text-sm font-medium transition-colors ${
-                      page === p
-                        ? 'bg-sky-500 text-white'
-                        : 'glass text-slate-400 hover:text-white'
-                    }`}
-                  >
-                    {p}
-                  </button>
+                  <button key={pg} onClick={() => setPage(pg)}
+                    className="w-9 h-9 rounded-lg text-sm font-medium transition-all"
+                    style={pg === page
+                      ? { background: 'rgba(56,189,248,0.1)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.2)' }
+                      : { background: 'transparent', color: '#7d8590', border: '1px solid #21262d' }
+                    }
+                  >{pg}</button>
                 );
               })}
             </div>
-            <button
-              id="repos-next-page"
-              onClick={() => setPage(p => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              className="flex items-center gap-1 px-4 py-2 glass rounded-xl text-sm text-slate-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-            >
-              Next <ChevronRight className="w-4 h-4" />
+            <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
+              className="btn-secondary px-3 py-2 disabled:opacity-30" style={{ padding: '8px 12px' }}>
+              <ChevronRight size={16} />
             </button>
           </div>
         )}
       </div>
     </AppShell>
-  );
-}
-
-export default function ReposPage() {
-  return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0f172a] flex items-center justify-center"><div className="w-8 h-8 border-2 border-sky-500 border-t-transparent rounded-full animate-spin" /></div>}>
-      <ReposContent />
-    </Suspense>
   );
 }
