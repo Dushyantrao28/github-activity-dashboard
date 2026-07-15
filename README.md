@@ -89,7 +89,7 @@ Open [http://localhost:3000](http://localhost:3000) and log in with GitHub. 🎉
 
 ---
 
-## 🌐 Deploy to Vercel (Day 29)
+## 🌐 Deploy to Vercel 
 
 ### Step 1 — Push to GitHub
 ```bash
