@@ -59,11 +59,11 @@ export async function fetchContributions(
 
   const calendar =
     json?.data?.user?.contributionsCollection?.contributionCalendar;
+    
   if (!calendar) {
-    return { totalContributions: 0, weeks: [] };
+    return { totalContributions: 0, longestStreak: 0, currentStreak: 0, weeks: [] };
   }
 
-  return {
   const weeks = calendar.weeks.map((w: any) => ({
     firstDay: w.firstDay,
     days: w.contributionDays.map((d: any) => ({
