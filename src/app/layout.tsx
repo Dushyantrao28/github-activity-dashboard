@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/Providers";
 import { Toaster } from "react-hot-toast";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   title: "GitPulse — GitHub Activity Dashboard",
-  description:
-    "Visualize your GitHub activity, contributions, repositories, and coding patterns in a beautiful dashboard.",
-  keywords: ["GitHub", "dashboard", "activity", "contributions", "developer"],
+  description: "Visualize your GitHub contributions, repositories, and coding patterns in a stunning developer dashboard.",
+  keywords: ["GitHub", "dashboard", "analytics", "contributions", "developer tools"],
   authors: [{ name: "GitPulse" }],
   openGraph: {
     title: "GitPulse — GitHub Activity Dashboard",
@@ -23,36 +15,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body style={{ fontFamily: "'Inter', system-ui, sans-serif" }}>
         <Providers>
           {children}
           <Toaster
             position="bottom-right"
             toastOptions={{
               style: {
-                background: "#1e293b",
-                color: "#f1f5f9",
-                border: "1px solid #334155",
-                borderRadius: "12px",
+                background: "#161b22",
+                color: "#e6edf3",
+                border: "1px solid #30363d",
+                borderRadius: "10px",
+                fontSize: "14px",
               },
             }}
           />

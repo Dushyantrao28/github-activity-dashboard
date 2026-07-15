@@ -4,48 +4,46 @@ import { formatNumber, timeAgo, getLanguageColor } from '@/lib/utils';
 
 export function PinnedRepoCard({ repo }: { repo: GithubRepo }) {
   return (
-    <a
-      href={repo.html_url}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="card card-hover flex flex-col group"
-      style={{ padding: '16px', textDecoration: 'none' }}
+    <a href={repo.html_url} target="_blank" rel="noopener noreferrer"
+      className="card card-hover"
+      style={{ padding: '16px', display: 'flex', flexDirection: 'column', textDecoration: 'none', minHeight: 140 }}
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <h3 className="text-sm font-semibold truncate group-hover:text-sky-400 transition-colors" style={{ color: '#e2e8f0' }}>
-          {repo.name}
-        </h3>
-        <ExternalLink size={13} className="flex-shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#38bdf8' }} />
+      {/* Repo name */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
+        <span style={{ fontSize: 14, fontWeight: 600, color: '#58a6ff', lineHeight: 1.3 }}>{repo.name}</span>
+        <ExternalLink size={12} style={{ color: '#484f58', flexShrink: 0, marginTop: 2 }} />
       </div>
 
-      {repo.description && (
-        <p className="text-xs leading-relaxed line-clamp-2 mb-3 flex-1" style={{ color: '#7d8590' }}>{repo.description}</p>
-      )}
+      {/* Description */}
+      <p style={{ fontSize: 12, color: '#7d8590', lineHeight: 1.5, flex: 1, marginBottom: 12,
+        display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        {repo.description || 'No description provided.'}
+      </p>
 
+      {/* Topics */}
       {repo.topics && repo.topics.length > 0 && (
-        <div className="flex flex-wrap gap-1.5 mb-3">
-          {repo.topics.slice(0, 3).map((t) => (
-            <span key={t} className="text-[10px] px-2 py-0.5 rounded-full" style={{ background: 'rgba(56,189,248,0.08)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.15)' }}>
-              {t}
-            </span>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 }}>
+          {repo.topics.slice(0, 3).map(t => (
+            <span key={t} style={{ fontSize: 11, padding: '2px 8px', borderRadius: 20, background: 'rgba(31,111,235,0.12)', color: '#58a6ff', border: '1px solid rgba(31,111,235,0.2)' }}>{t}</span>
           ))}
         </div>
       )}
 
-      <div className="flex items-center gap-3 mt-auto pt-3" style={{ borderTop: '1px solid #21262d' }}>
+      {/* Footer */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #21262d' }}>
         {repo.language && (
-          <span className="flex items-center gap-1.5 text-xs" style={{ color: '#7d8590' }}>
-            <span className="w-2 h-2 rounded-full" style={{ backgroundColor: getLanguageColor(repo.language) }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#7d8590' }}>
+            <div style={{ width: 8, height: 8, borderRadius: '50%', background: getLanguageColor(repo.language) }} />
             {repo.language}
-          </span>
+          </div>
         )}
-        <span className="flex items-center gap-1 text-xs" style={{ color: '#7d8590' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: '#7d8590' }}>
           <Star size={11} /> {formatNumber(repo.stargazers_count)}
-        </span>
-        <span className="flex items-center gap-1 text-xs" style={{ color: '#7d8590' }}>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: '#7d8590' }}>
           <GitFork size={11} /> {formatNumber(repo.forks_count)}
-        </span>
-        <span className="ml-auto text-[10px]" style={{ color: '#3d444d' }}>{timeAgo(repo.updated_at)}</span>
+        </div>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#484f58' }}>Updated {timeAgo(repo.updated_at)}</span>
       </div>
     </a>
   );

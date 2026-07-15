@@ -16,97 +16,86 @@ export default function ReposPage() {
   const { data: session } = useSession();
   const login = (session as any)?.user?.login;
   const { data: repos, isLoading } = useGithubRepos(login);
-
   const [search, setSearch] = useState('');
   const [language, setLanguage] = useState('');
   const [sort, setSort] = useState('stars');
   const [page, setPage] = useState(1);
 
   const languages = useMemo(() => {
-    const langs = new Set(repos?.map((r) => r.language).filter(Boolean) as string[]);
-    return Array.from(langs).sort();
+    const s = new Set(repos?.map(r => r.language).filter(Boolean) as string[]);
+    return Array.from(s).sort();
   }, [repos]);
 
   const filtered = useMemo(() => {
     let list = repos ?? [];
-    if (search) list = list.filter((r) => r.name.toLowerCase().includes(search.toLowerCase()) || r.description?.toLowerCase().includes(search.toLowerCase()));
-    if (language) list = list.filter((r) => r.language === language);
+    if (search) list = list.filter(r => r.name.toLowerCase().includes(search.toLowerCase()) || r.description?.toLowerCase().includes(search.toLowerCase()));
+    if (language) list = list.filter(r => r.language === language);
+    const sorted = [...list];
     switch (sort) {
-      case 'stars': list = [...list].sort((a, b) => b.stargazers_count - a.stargazers_count); break;
-      case 'forks': list = [...list].sort((a, b) => b.forks_count - a.forks_count); break;
-      case 'updated': list = [...list].sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()); break;
-      case 'name': list = [...list].sort((a, b) => a.name.localeCompare(b.name)); break;
-      case 'size': list = [...list].sort((a, b) => b.size - a.size); break;
+      case 'stars':   sorted.sort((a, b) => b.stargazers_count - a.stargazers_count); break;
+      case 'forks':   sorted.sort((a, b) => b.forks_count - a.forks_count); break;
+      case 'updated': sorted.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()); break;
+      case 'name':    sorted.sort((a, b) => a.name.localeCompare(b.name)); break;
+      case 'size':    sorted.sort((a, b) => b.size - a.size); break;
     }
-    return list;
+    return sorted;
   }, [repos, search, language, sort]);
 
   const totalPages = Math.ceil(filtered.length / PER_PAGE);
   const paginated = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
-  const handleSearch = (v: string) => { setSearch(v); setPage(1); };
-  const handleLanguage = (v: string) => { setLanguage(v); setPage(1); };
-  const handleSort = (v: string) => { setSort(v); setPage(1); };
-
   return (
     <AppShell>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {/* Header */}
-        <div className="mb-6 animate-fade-up">
-          <h1 className="text-2xl font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>Repository Explorer</h1>
-          <p className="text-sm mt-1" style={{ color: '#7d8590' }}>Browse, filter, and search all your public repositories</p>
+      <div className="page-content">
+        <div className="animate-fade-up" style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 4 }}>Repository Explorer</h1>
+          <p style={{ color: '#7d8590', fontSize: 14 }}>Browse, filter, and search all your public repositories</p>
         </div>
 
-        {/* Filter bar */}
-        <div className="mb-6">
+        <div style={{ marginBottom: 20 }}>
           <FilterBar
-            search={search} onSearch={handleSearch}
-            language={language} onLanguage={handleLanguage}
-            sort={sort} onSort={handleSort}
+            search={search} onSearch={v => { setSearch(v); setPage(1); }}
+            language={language} onLanguage={v => { setLanguage(v); setPage(1); }}
+            sort={sort} onSort={v => { setSort(v); setPage(1); }}
             languages={languages}
             totalCount={repos?.length ?? 0}
             filteredCount={filtered.length}
           />
         </div>
 
-        {/* Grid */}
         {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
             {Array.from({ length: 12 }).map((_, i) => <RepoCardSkeleton key={i} />)}
           </div>
         ) : paginated.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {paginated.map((repo) => <RepoCard key={repo.id} repo={repo} />)}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: 12 }}>
+            {paginated.map(repo => <RepoCard key={repo.id} repo={repo} />)}
           </div>
         ) : (
-          <EmptyState icon={GitBranch} title="No repositories found" description="Try adjusting your search or filter" />
+          <EmptyState icon={GitBranch} title="No repositories found" description="Try adjusting your search or filter criteria" />
         )}
 
-        {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 mt-8">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 32 }}>
             <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page === 1}
-              className="btn-secondary px-3 py-2 disabled:opacity-30" style={{ padding: '8px 12px' }}>
-              <ChevronLeft size={16} />
+              className="btn btn-secondary" style={{ padding: '7px 12px', display: 'flex', gap: 4, alignItems: 'center' }}>
+              <ChevronLeft size={15} /> Prev
             </button>
-            <div className="flex gap-1">
-              {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-                const pg = page <= 4 ? i + 1 : page >= totalPages - 3 ? totalPages - 6 + i : page - 3 + i;
+            <div style={{ display: 'flex', gap: 4 }}>
+              {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
+                const pg = Math.max(1, Math.min(page - 3 + i, totalPages - 6 + i));
                 if (pg < 1 || pg > totalPages) return null;
                 return (
                   <button key={pg} onClick={() => setPage(pg)}
-                    className="w-9 h-9 rounded-lg text-sm font-medium transition-all"
-                    style={pg === page
-                      ? { background: 'rgba(56,189,248,0.1)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.2)' }
-                      : { background: 'transparent', color: '#7d8590', border: '1px solid #21262d' }
-                    }
+                    className={pg === page ? 'btn btn-primary' : 'btn btn-secondary'}
+                    style={{ padding: '7px 13px', minWidth: 38 }}
                   >{pg}</button>
                 );
               })}
             </div>
             <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page === totalPages}
-              className="btn-secondary px-3 py-2 disabled:opacity-30" style={{ padding: '8px 12px' }}>
-              <ChevronRight size={16} />
+              className="btn btn-secondary" style={{ padding: '7px 12px', display: 'flex', gap: 4, alignItems: 'center' }}>
+              Next <ChevronRight size={15} />
             </button>
           </div>
         )}

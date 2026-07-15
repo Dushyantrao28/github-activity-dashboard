@@ -4,170 +4,175 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { LayoutDashboard, User, GitBranch, BarChart3, LogOut, Search, Menu, X, ChevronDown } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { LayoutDashboard, User, GitBranch, BarChart3, LogOut, Search, Menu, X, ChevronDown, Bell } from 'lucide-react';
 
-function GitPulseLogo() {
+function GithubIcon({ size = 16 }: { size?: number }) {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="3" fill="#38bdf8"/>
-      <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2z" stroke="#38bdf8" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="3 2"/>
-      <path d="M12 7v5l3 3" stroke="#c084fc" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
     </svg>
   );
 }
 
-const navItems = [
+const NAV_ITEMS = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/profile', label: 'Profile', icon: User },
-  { href: '/repos', label: 'Repos', icon: GitBranch },
-  { href: '/charts', label: 'Analytics', icon: BarChart3 },
+  { href: '/profile',   label: 'Profile',   icon: User },
+  { href: '/repos',     label: 'Repos',     icon: GitBranch },
+  { href: '/charts',    label: 'Analytics', icon: BarChart3 },
 ];
 
 export function Navbar() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname  = usePathname();
+  const router    = useRouter();
   const { data: session } = useSession();
-  const [search, setSearch] = useState('');
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [q, setQ]           = useState('');
+  const [mobile, setMobile] = useState(false);
+  const [menu, setMenu]     = useState(false);
 
-  const user = session?.user;
+  const user  = session?.user;
   const login = (session as any)?.user?.login;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (search.trim()) {
-      router.push(`/profile?user=${encodeURIComponent(search.trim())}`);
-      setSearch('');
-      setMobileOpen(false);
-    }
+    if (q.trim()) { router.push(`/profile?user=${encodeURIComponent(q.trim())}`); setQ(''); setMobile(false); }
   };
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50" style={{ background: 'rgba(6,9,18,0.92)', borderBottom: '1px solid #21262d', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-between h-[58px]">
+      <nav style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
+        background: 'rgba(13,17,23,0.95)',
+        borderBottom: '1px solid #21262d',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
+      }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', gap: 16 }}>
 
-            {/* Logo */}
-            <Link href="/dashboard" className="flex items-center gap-2.5 group flex-shrink-0">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg,#0f172a,#1e1b4b)', border: '1px solid rgba(56,189,248,0.2)' }}>
-                <GitPulseLogo />
-              </div>
-              <span className="text-[15px] font-bold tracking-tight hidden sm:block" style={{ color: '#e2e8f0' }}>
-                Git<span className="gradient-text">Pulse</span>
-              </span>
-            </Link>
-
-            {/* Desktop Nav */}
-            <div className="hidden md:flex items-center gap-1">
-              {navItems.map((item) => {
-                const active = pathname.startsWith(item.href);
-                return (
-                  <Link key={item.href} href={item.href} className={cn('nav-item', active && 'active')}>
-                    <item.icon size={15} />
-                    {item.label}
-                  </Link>
-                );
-              })}
+          {/* Logo */}
+          <Link href="/dashboard" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flexShrink: 0 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 6, background: 'linear-gradient(135deg,#1f6feb,#8957e5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <GithubIcon size={15} />
             </div>
+            <span style={{ fontSize: 15, fontWeight: 700, color: '#e6edf3', letterSpacing: '-0.02em' }}>GitPulse</span>
+          </Link>
 
-            {/* Right side */}
-            <div className="flex items-center gap-2">
-              {/* Search */}
-              <form onSubmit={handleSearch} className="hidden sm:flex items-center relative">
-                <Search size={14} className="absolute left-3 pointer-events-none" style={{ color: '#3d444d' }} />
-                <input
-                  id="global-search-input"
-                  type="text"
-                  placeholder="Search user..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="input-dark pl-9 pr-3 py-[7px] text-sm w-40 focus:w-52 transition-all"
-                  style={{ fontSize: '13px' }}
+          {/* Divider */}
+          <div style={{ width: 1, height: 20, background: '#30363d', flexShrink: 0 }} />
+
+          {/* Desktop nav */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }} className="hidden-mobile">
+            {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
+              const active = pathname.startsWith(href);
+              return (
+                <Link key={href} href={href} className={`nav-link${active ? ' active' : ''}`}>
+                  <Icon size={14} />{label}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Search */}
+          <form onSubmit={handleSearch} style={{ position: 'relative', flexShrink: 0 }} className="hidden-mobile">
+            <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#484f58', pointerEvents: 'none' }} />
+            <input
+              id="global-search"
+              className="input"
+              type="text"
+              placeholder="Search user..."
+              value={q}
+              onChange={e => setQ(e.target.value)}
+              style={{ paddingLeft: 32, paddingRight: 12, paddingTop: 6, paddingBottom: 6, width: 180, fontSize: 13 }}
+            />
+          </form>
+
+          {/* User */}
+          {user && (
+            <div style={{ position: 'relative', flexShrink: 0 }}>
+              <button
+                id="user-menu-btn"
+                onClick={() => setMenu(!menu)}
+                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', borderRadius: 8, background: 'transparent', border: '1px solid transparent', cursor: 'pointer', transition: 'all 0.1s' }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#1c2128'; (e.currentTarget as HTMLElement).style.borderColor = '#30363d'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.borderColor = 'transparent'; }}
+              >
+                <img
+                  src={user.image ?? ''}
+                  alt={user.name ?? ''}
+                  style={{ width: 26, height: 26, borderRadius: '50%', border: '2px solid #30363d' }}
                 />
-              </form>
+                <ChevronDown size={12} style={{ color: '#7d8590', transform: menu ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }} />
+              </button>
 
-              {/* User dropdown */}
-              {user && (
-                <div className="relative">
-                  <button
-                    id="user-menu-btn"
-                    onClick={() => setUserMenuOpen(!userMenuOpen)}
-                    className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-[#161b22] transition-colors"
-                  >
-                    {user.image ? (
-                      <img src={user.image} alt={user.name ?? ''} className="w-7 h-7 rounded-full" style={{ border: '2px solid #30363d' }} />
-                    ) : (
-                      <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: 'linear-gradient(135deg,#1d4ed8,#7c3aed)', color: 'white' }}>
-                        {user.name?.[0] ?? 'U'}
-                      </div>
-                    )}
-                    <span className="text-xs hidden sm:block" style={{ color: '#7d8590' }}>{login}</span>
-                    <ChevronDown size={12} className={cn('transition-transform', userMenuOpen && 'rotate-180')} style={{ color: '#7d8590' }} />
-                  </button>
-
-                  {userMenuOpen && (
-                    <div className="absolute right-0 top-full mt-2 w-52 card animate-slide-down" style={{ padding: '6px' }}>
-                      <div style={{ padding: '10px 12px 12px', borderBottom: '1px solid #21262d', marginBottom: '4px' }}>
-                        <p className="text-sm font-semibold" style={{ color: '#e2e8f0' }}>{user.name}</p>
-                        <p className="text-xs" style={{ color: '#7d8590' }}>@{login}</p>
-                      </div>
-                      <Link href="/profile" onClick={() => setUserMenuOpen(false)}
-                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm hover:bg-[#161b22] transition-colors"
-                        style={{ color: '#7d8590' }}
+              {menu && (
+                <div className="animate-slide-down" style={{
+                  position: 'absolute', right: 0, top: 'calc(100% + 8px)',
+                  background: '#161b22', border: '1px solid #30363d', borderRadius: 12,
+                  minWidth: 220, boxShadow: '0 8px 32px rgba(0,0,0,0.5)', overflow: 'hidden', zIndex: 200
+                }}>
+                  <div style={{ padding: '12px 16px 10px', borderBottom: '1px solid #21262d' }}>
+                    <div style={{ fontWeight: 600, fontSize: 14, color: '#e6edf3' }}>{user.name}</div>
+                    <div style={{ fontSize: 12, color: '#7d8590', marginTop: 1 }}>@{login}</div>
+                  </div>
+                  <div style={{ padding: '6px' }}>
+                    {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+                      <Link key={href} href={href} onClick={() => setMenu(false)}
+                        style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 6, fontSize: 14, color: '#7d8590', textDecoration: 'none', transition: 'all 0.1s' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#1c2128'; (e.currentTarget as HTMLElement).style.color = '#e6edf3'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#7d8590'; }}
                       >
-                        <User size={14} /> View Profile
+                        <Icon size={14} />{label}
                       </Link>
-                      <button id="logout-btn" onClick={() => signOut({ callbackUrl: '/login' })}
-                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm hover:bg-red-500/10 transition-colors"
-                        style={{ color: '#f85149' }}
-                      >
-                        <LogOut size={14} /> Sign out
-                      </button>
-                    </div>
-                  )}
+                    ))}
+                    <div style={{ borderTop: '1px solid #21262d', margin: '6px 0' }} />
+                    <button
+                      id="logout-btn"
+                      onClick={() => signOut({ callbackUrl: '/login' })}
+                      style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 6, fontSize: 14, color: '#f85149', background: 'transparent', border: 'none', cursor: 'pointer', width: '100%', transition: 'all 0.1s' }}
+                      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(248,81,73,0.1)'; }}
+                      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}
+                    >
+                      <LogOut size={14} /> Sign out
+                    </button>
+                  </div>
                 </div>
               )}
-
-              <button id="mobile-menu-btn" onClick={() => setMobileOpen(!mobileOpen)}
-                className="md:hidden p-2 rounded-lg hover:bg-[#161b22] transition-colors"
-                style={{ color: '#7d8590' }}
-              >
-                {mobileOpen ? <X size={18} /> : <Menu size={18} />}
-              </button>
             </div>
-          </div>
+          )}
+
+          {/* Mobile toggle */}
+          <button onClick={() => setMobile(!mobile)} className="show-mobile"
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#7d8590', padding: 6, display: 'none' }}
+          >
+            {mobile ? <X size={20} /> : <Menu size={20} />}
+          </button>
         </div>
 
-        {/* Mobile menu */}
-        {mobileOpen && (
-          <div className="md:hidden animate-slide-down" style={{ borderTop: '1px solid #21262d', padding: '12px 16px', background: 'rgba(6,9,18,0.98)' }}>
-            <form onSubmit={handleSearch} className="relative mb-3">
-              <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" style={{ color: '#3d444d' }} />
-              <input
-                type="text" placeholder="Search GitHub user..."
-                value={search} onChange={(e) => setSearch(e.target.value)}
-                className="input-dark w-full pl-9 pr-3 py-2.5 text-sm"
-              />
+        {/* Mobile nav */}
+        {mobile && (
+          <div className="animate-slide-down" style={{ borderTop: '1px solid #21262d', padding: '12px 16px', background: '#0d1117' }}>
+            <form onSubmit={handleSearch} style={{ position: 'relative', marginBottom: 10 }}>
+              <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#484f58', pointerEvents: 'none' }} />
+              <input className="input" type="text" placeholder="Search GitHub user..." value={q}
+                onChange={e => setQ(e.target.value)} style={{ paddingLeft: 32, width: '100%', fontSize: 13 }} />
             </form>
-            <div className="space-y-1">
-              {navItems.map((item) => {
-                const active = pathname.startsWith(item.href);
-                return (
-                  <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                    className={cn('nav-item w-full', active && 'active')}
-                    style={{ padding: '10px 14px' }}
-                  >
-                    <item.icon size={16} /> {item.label}
-                  </Link>
-                );
-              })}
-            </div>
+            {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
+              <Link key={href} href={href} onClick={() => setMobile(false)}
+                className={`nav-link${pathname.startsWith(href) ? ' active' : ''}`}
+                style={{ display: 'flex', padding: '10px 12px', marginBottom: 2 }}
+              >
+                <Icon size={15} />{label}
+              </Link>
+            ))}
           </div>
         )}
       </nav>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .hidden-mobile { display: none !important; }
+          .show-mobile { display: flex !important; }
+        }
+      `}</style>
     </>
   );
 }

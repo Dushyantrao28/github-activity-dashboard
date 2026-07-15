@@ -5,67 +5,63 @@ import { BarChart, Bar, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, R
 import type { CommitActivity } from '@/types/github';
 import { BarChart3, TrendingUp } from 'lucide-react';
 
-const CustomTooltip = ({ active, payload, label }: any) => {
+const Tip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: '#161b22', border: '1px solid #30363d', borderRadius: '10px', padding: '10px 14px', boxShadow: '0 8px 24px rgba(0,0,0,0.5)' }}>
-      <p style={{ fontSize: '11px', color: '#7d8590', marginBottom: '4px' }}>{label}</p>
-      <p style={{ fontSize: '14px', fontWeight: 700, color: '#38bdf8' }}>{payload[0].value} <span style={{ fontSize: '11px', fontWeight: 400, color: '#7d8590' }}>commits</span></p>
+    <div className="tooltip-dark">
+      <div style={{ fontSize: 11, color: '#7d8590', marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 15, fontWeight: 700, color: '#58a6ff' }}>{payload[0].value} <span style={{ fontSize: 11, color: '#7d8590', fontWeight: 400 }}>commits</span></div>
     </div>
   );
 };
 
 export function CommitChart({ data }: { data: CommitActivity[] }) {
-  const [type, setType] = useState<'bar' | 'area'>('bar');
+  const [t, setT] = useState<'bar' | 'area'>('bar');
   const total = data.reduce((s, d) => s + d.commits, 0);
 
   return (
     <div className="card" style={{ padding: '20px 24px' }}>
-      <div className="flex items-center justify-between mb-5">
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
-          <h2 className="text-sm font-semibold" style={{ color: '#e2e8f0' }}>Commit Frequency</h2>
-          <p className="text-xs mt-1" style={{ color: '#7d8590' }}>
-            <span style={{ color: '#38bdf8', fontWeight: 600 }}>{total}</span> commits · last 6 months
+          <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>Commit Frequency</h2>
+          <p style={{ fontSize: 13, color: '#7d8590' }}>
+            <span style={{ color: '#58a6ff', fontWeight: 600 }}>{total}</span> commits · last 6 months
           </p>
         </div>
-        <div className="flex gap-1.5">
-          {(['bar', 'area'] as const).map((t) => (
-            <button key={t} onClick={() => setType(t)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all"
-              style={type === t
-                ? { background: 'rgba(56,189,248,0.1)', color: '#38bdf8', border: '1px solid rgba(56,189,248,0.2)' }
-                : { background: 'transparent', color: '#7d8590', border: '1px solid transparent' }
-              }
+        <div style={{ display: 'flex', gap: 4 }}>
+          {(['bar', 'area'] as const).map(type => (
+            <button key={type} onClick={() => setT(type)}
+              className={t === type ? 'btn btn-primary' : 'btn btn-ghost'}
+              style={{ padding: '5px 12px', fontSize: 12, gap: 5 }}
             >
-              {t === 'bar' ? <BarChart3 size={13} /> : <TrendingUp size={13} />}
-              {t.charAt(0).toUpperCase() + t.slice(1)}
+              {type === 'bar' ? <BarChart3 size={13} /> : <TrendingUp size={13} />}
+              {type === 'bar' ? 'Bar' : 'Area'}
             </button>
           ))}
         </div>
       </div>
-
       <ResponsiveContainer width="100%" height={220}>
-        {type === 'bar' ? (
-          <BarChart data={data} barCategoryGap="35%">
+        {t === 'bar' ? (
+          <BarChart data={data} barCategoryGap="35%" barGap={2}>
             <CartesianGrid strokeDasharray="3 3" stroke="#21262d" vertical={false} />
-            <XAxis dataKey="week" tick={{ fill: '#3d444d', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
-            <YAxis tick={{ fill: '#3d444d', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
-            <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(56,189,248,0.04)' }} />
-            <Bar dataKey="commits" fill="#38bdf8" radius={[4, 4, 0, 0]} />
+            <XAxis dataKey="week" tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
+            <YAxis tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
+            <Tooltip content={<Tip />} cursor={{ fill: 'rgba(88,166,255,0.05)' }} />
+            <Bar dataKey="commits" fill="#1f6feb" radius={[4, 4, 0, 0]} />
           </BarChart>
         ) : (
           <AreaChart data={data}>
             <defs>
               <linearGradient id="cg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#38bdf8" stopOpacity={0.2} />
-                <stop offset="95%" stopColor="#38bdf8" stopOpacity={0} />
+                <stop offset="5%" stopColor="#1f6feb" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#1f6feb" stopOpacity={0} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#21262d" vertical={false} />
-            <XAxis dataKey="week" tick={{ fill: '#3d444d', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
-            <YAxis tick={{ fill: '#3d444d', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
-            <Tooltip content={<CustomTooltip />} />
-            <Area type="monotone" dataKey="commits" stroke="#38bdf8" strokeWidth={2} fill="url(#cg)" dot={false} />
+            <XAxis dataKey="week" tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
+            <YAxis tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
+            <Tooltip content={<Tip />} />
+            <Area type="monotone" dataKey="commits" stroke="#1f6feb" strokeWidth={2} fill="url(#cg)" dot={false} />
           </AreaChart>
         )}
       </ResponsiveContainer>

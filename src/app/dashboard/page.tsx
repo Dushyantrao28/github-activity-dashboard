@@ -16,95 +16,92 @@ import { useGithubRepos } from '@/hooks/useGithubRepos';
 import { useContributions } from '@/hooks/useContributions';
 import { useCommitActivity } from '@/hooks/useCommitActivity';
 import { useLanguageStats } from '@/hooks/useLanguageStats';
-import { Star, ArrowUpRight } from 'lucide-react';
+import { Star, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardPage() {
   const { data: session } = useSession();
   const login = (session as any)?.user?.login;
 
-  const { data: user, isLoading: userLoading, error: userError, refetch: refetchUser } = useGithubUser(login);
-  const { data: repos, isLoading: reposLoading } = useGithubRepos(login);
-  const { data: contributions, isLoading: contribLoading } = useContributions(login);
-  const { data: commits, isLoading: commitsLoading } = useCommitActivity(login);
-  const { data: languages, isLoading: langsLoading } = useLanguageStats(repos);
+  const { data: user, isLoading: uL, error: uE, refetch: uR } = useGithubUser(login);
+  const { data: repos, isLoading: rL } = useGithubRepos(login);
+  const { data: contributions, isLoading: cL } = useContributions(login);
+  const { data: commits, isLoading: cmL } = useCommitActivity(login);
+  const { data: languages, isLoading: lL } = useLanguageStats(repos);
 
-  const topRepos = repos?.filter((r) => !r.fork).sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 6) ?? [];
+  const topRepos = repos?.filter(r => !r.fork).sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 6) ?? [];
   const firstName = session?.user?.name?.split(' ')[0] ?? login ?? 'there';
+
+  const g = (v: string) => `<span style={{ color: '#58a6ff' }}>${v}</span>`;
 
   return (
     <AppShell>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {/* Page header */}
-        <div className="mb-8 animate-fade-up">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs" style={{ color: '#7d8590' }}>Live data from GitHub API</span>
-          </div>
-          <h1 className="text-2xl font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>
-            Good day, <span className="gradient-text">{firstName}</span> 👋
+      <div className="page-content">
+
+        {/* Header */}
+        <div className="animate-fade-up" style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 4 }}>
+            Good day, <span style={{ color: '#58a6ff' }}>{firstName}</span> 👋
           </h1>
-          <p className="text-sm mt-1" style={{ color: '#7d8590' }}>Here's a full overview of your GitHub activity and stats.</p>
+          <p style={{ color: '#7d8590', fontSize: 14 }}>Overview of your GitHub activity and repository insights</p>
         </div>
 
         {/* Profile + Stats */}
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-5 mb-5">
-          <div className="xl:col-span-4">
-            {userLoading ? <ProfileCardSkeleton /> :
-             userError ? <ErrorCard message={userError.message} onRetry={() => refetchUser()} /> :
-             user ? <AvatarCard user={user} /> : null}
+        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 16, marginBottom: 16, alignItems: 'start' }}  className="responsive-grid-profile">
+          <div>
+            {uL ? <ProfileCardSkeleton /> : uE ? <ErrorCard message={uE.message} onRetry={uR} /> : user ? <AvatarCard user={user} /> : null}
           </div>
-          <div className="xl:col-span-8">
-            {userLoading || reposLoading ? (
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                {[1,2,3,4].map(i => <div key={i} className="card shimmer h-28" />)}
+          <div>
+            {uL || rL ? (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                {[1,2,3,4].map(i => <div key={i} className="skeleton" style={{ height: 100, borderRadius: 12 }} />)}
               </div>
             ) : user ? <StatsGrid user={user} repos={repos} /> : null}
           </div>
         </div>
 
         {/* Heatmap */}
-        <div className="mb-5">
-          {contribLoading ? <HeatmapSkeleton /> :
-           contributions ? <ContributionHeatmap data={contributions} username={login ?? ''} /> : null}
+        <div style={{ marginBottom: 16 }}>
+          {cL ? <HeatmapSkeleton /> : contributions ? <ContributionHeatmap data={contributions} username={login ?? ''} /> : null}
         </div>
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
-          <div className="lg:col-span-3">
-            {commitsLoading ? <ChartSkeleton /> :
-             commits && commits.length > 0 ? <CommitChart data={commits} /> :
-             <EmptyState title="No commit data" description="No push events found in the last 6 months" />}
-          </div>
-          <div className="lg:col-span-2">
-            {langsLoading ? <ChartSkeleton /> :
-             languages && languages.length > 0 ? <LanguageDonut data={languages} /> :
-             <EmptyState title="No language data" description="No language data available" />}
-          </div>
+        {/* Charts row */}
+        <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 16, marginBottom: 24 }} className="responsive-grid-charts">
+          <div>{cmL ? <ChartSkeleton /> : commits && commits.length > 0 ? <CommitChart data={commits} /> : <EmptyState title="No commit data" description="No push events found in the last 6 months" />}</div>
+          <div>{lL ? <ChartSkeleton /> : languages && languages.length > 0 ? <LanguageDonut data={languages} /> : <EmptyState title="No language data" />}</div>
         </div>
 
         {/* Top Repos */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
+        <div style={{ marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
             <div>
-              <h2 className="text-base font-semibold" style={{ color: '#e2e8f0' }}>Top Repositories</h2>
-              <p className="text-xs mt-0.5" style={{ color: '#7d8590' }}>Sorted by stars</p>
+              <h2 style={{ fontSize: 16, fontWeight: 600 }}>Top Repositories</h2>
+              <p style={{ fontSize: 13, color: '#7d8590', marginTop: 2 }}>Sorted by star count</p>
             </div>
-            <Link href="/repos" className="flex items-center gap-1 text-xs font-medium hover:opacity-80 transition-opacity" style={{ color: '#38bdf8' }}>
-              View all <ArrowUpRight size={13} />
+            <Link href="/repos" className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
+              View all <ArrowRight size={13} />
             </Link>
           </div>
-          {reposLoading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {rL ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
               {[1,2,3,4,5,6].map(i => <RepoCardSkeleton key={i} />)}
             </div>
           ) : topRepos.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
               {topRepos.map(repo => <PinnedRepoCard key={repo.id} repo={repo} />)}
             </div>
           ) : <EmptyState icon={Star} title="No repositories" description="No public repositories found" />}
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 960px) {
+          .responsive-grid-profile { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 768px) {
+          .responsive-grid-charts { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </AppShell>
   );
 }

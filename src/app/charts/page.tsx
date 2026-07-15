@@ -19,90 +19,85 @@ export default function ChartsPage() {
   const { data: session } = useSession();
   const login = (session as any)?.user?.login;
 
-  const { data: user } = useGithubUser(login);
   const { data: repos } = useGithubRepos(login);
-  const { data: contributions, isLoading: contribLoading } = useContributions(login);
-  const { data: commits, isLoading: commitsLoading } = useCommitActivity(login);
-  const { data: languages, isLoading: langsLoading } = useLanguageStats(repos);
+  const { data: contributions, isLoading: cL } = useContributions(login);
+  const { data: commits, isLoading: cmL } = useCommitActivity(login);
+  const { data: languages, isLoading: lL } = useLanguageStats(repos);
 
   const totalStars = repos?.reduce((s, r) => s + r.stargazers_count, 0) ?? 0;
   const totalForks = repos?.reduce((s, r) => s + r.forks_count, 0) ?? 0;
   const totalCommits = commits?.reduce((s, c) => s + c.commits, 0) ?? 0;
   const topLanguage = languages?.[0]?.name ?? '—';
+  const topRepos = repos?.filter(r => !r.fork).sort((a,b) => b.stargazers_count - a.stargazers_count).slice(0, 10) ?? [];
 
-  const topRepos = repos?.filter(r => !r.fork).sort((a,b) => b.stargazers_count - a.stargazers_count).slice(0, 8) ?? [];
-
-  const summaryStats = [
-    { icon: Star, label: 'Total Stars', value: formatNumber(totalStars), color: '#f59e0b', bg: 'rgba(245,158,11,0.08)', border: 'rgba(245,158,11,0.15)' },
-    { icon: GitFork, label: 'Total Forks', value: formatNumber(totalForks), color: '#38bdf8', bg: 'rgba(56,189,248,0.08)', border: 'rgba(56,189,248,0.15)' },
-    { icon: GitCommit, label: 'Commits (6mo)', value: formatNumber(totalCommits), color: '#818cf8', bg: 'rgba(129,140,248,0.08)', border: 'rgba(129,140,248,0.15)' },
-    { icon: Code2, label: 'Top Language', value: topLanguage, color: '#34d399', bg: 'rgba(52,211,153,0.08)', border: 'rgba(52,211,153,0.15)' },
+  const summaryCards = [
+    { icon: Star, label: 'Total Stars', value: formatNumber(totalStars), color: '#e3b341' },
+    { icon: GitFork, label: 'Total Forks', value: formatNumber(totalForks), color: '#58a6ff' },
+    { icon: GitCommit, label: 'Commits (6mo)', value: formatNumber(totalCommits), color: '#bc8cff' },
+    { icon: Code2, label: 'Top Language', value: topLanguage, color: '#3fb950' },
   ];
 
   return (
     <AppShell>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {/* Header */}
-        <div className="mb-6 animate-fade-up">
-          <h1 className="text-2xl font-bold" style={{ color: '#e2e8f0', letterSpacing: '-0.02em' }}>Analytics</h1>
-          <p className="text-sm mt-1" style={{ color: '#7d8590' }}>Deep dive into your coding patterns and activity</p>
+      <div className="page-content">
+        <div className="animate-fade-up" style={{ marginBottom: 24 }}>
+          <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 4 }}>Analytics</h1>
+          <p style={{ color: '#7d8590', fontSize: 14 }}>In-depth view of your coding patterns and GitHub activity</p>
         </div>
 
-        {/* Summary cards */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
-          {summaryStats.map((s) => (
-            <div key={s.label} className="card" style={{ padding: '18px' }}>
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center mb-3" style={{ background: s.bg, border: `1px solid ${s.border}` }}>
-                <s.icon size={16} style={{ color: s.color }} />
+        {/* Summary */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 16 }} className="responsive-grid-4">
+          {summaryCards.map(s => (
+            <div key={s.label} className="card" style={{ padding: '16px 18px', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 2, background: s.color }} />
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+                <span style={{ fontSize: 12, color: '#7d8590' }}>{s.label}</span>
+                <div style={{ width: 28, height: 28, borderRadius: 6, background: `${s.color}18`, border: `1px solid ${s.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <s.icon size={13} style={{ color: s.color }} />
+                </div>
               </div>
-              <p className="text-2xl font-bold" style={{ color: s.color }}>{s.value}</p>
-              <p className="text-xs mt-1" style={{ color: '#7d8590' }}>{s.label}</p>
+              <div style={{ fontSize: 26, fontWeight: 800, color: s.color, letterSpacing: '-0.03em' }}>{s.value}</div>
             </div>
           ))}
         </div>
 
         {/* Heatmap */}
-        <div className="mb-5">
-          {contribLoading ? <HeatmapSkeleton /> : contributions ? <ContributionHeatmap data={contributions} username={login ?? ''} /> : null}
+        <div style={{ marginBottom: 16 }}>
+          {cL ? <HeatmapSkeleton /> : contributions ? <ContributionHeatmap data={contributions} username={login ?? ''} /> : null}
         </div>
 
         {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-5">
-          <div className="lg:col-span-3">
-            {commitsLoading ? <ChartSkeleton /> : commits && commits.length > 0 ? <CommitChart data={commits} /> : <EmptyState title="No commit data" />}
-          </div>
-          <div className="lg:col-span-2">
-            {langsLoading ? <ChartSkeleton /> : languages && languages.length > 0 ? <LanguageDonut data={languages} /> : <EmptyState title="No language data" />}
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 16, marginBottom: 16 }} className="responsive-grid-charts">
+          <div>{cmL ? <ChartSkeleton /> : commits?.length ? <CommitChart data={commits} /> : <EmptyState title="No commit data" />}</div>
+          <div>{lL ? <ChartSkeleton /> : languages?.length ? <LanguageDonut data={languages} /> : <EmptyState title="No language data" />}</div>
         </div>
 
-        {/* Top repos leaderboard */}
+        {/* Leaderboard */}
         <div className="card" style={{ padding: '20px 24px' }}>
-          <div className="flex items-center gap-2 mb-5">
-            <Trophy size={16} style={{ color: '#f59e0b' }} />
-            <h2 className="text-sm font-semibold" style={{ color: '#e2e8f0' }}>Most Starred Repositories</h2>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+            <Trophy size={16} style={{ color: '#e3b341' }} />
+            <h2 style={{ fontSize: 15, fontWeight: 600 }}>Most Starred Repositories</h2>
           </div>
-          <div className="space-y-3">
+          <div>
             {topRepos.map((repo, i) => {
               const maxStars = topRepos[0]?.stargazers_count || 1;
-              const pct = (repo.stargazers_count / maxStars) * 100;
               return (
                 <a key={repo.id} href={repo.html_url} target="_blank" rel="noopener noreferrer"
-                  className="flex items-center gap-3 group hover:opacity-80 transition-opacity" style={{ textDecoration: 'none' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 0', borderBottom: i < topRepos.length - 1 ? '1px solid #21262d' : 'none', textDecoration: 'none' }}
                 >
-                  <span className="text-xs font-mono w-5 text-right flex-shrink-0" style={{ color: i < 3 ? '#f59e0b' : '#3d444d' }}>#{i + 1}</span>
-                  <span className="text-sm w-36 truncate font-medium group-hover:text-sky-400 transition-colors" style={{ color: '#e2e8f0' }}>{repo.name}</span>
+                  <span style={{ fontSize: 12, fontFamily: 'monospace', width: 24, textAlign: 'right', color: i < 3 ? '#e3b341' : '#484f58', fontWeight: 700 }}>#{i+1}</span>
+                  <span style={{ fontSize: 14, fontWeight: 600, color: '#58a6ff', width: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{repo.name}</span>
                   {repo.language && (
-                    <span className="flex items-center gap-1.5 w-24 flex-shrink-0">
-                      <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: getLanguageColor(repo.language) }} />
-                      <span className="text-xs truncate" style={{ color: '#7d8590' }}>{repo.language}</span>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 5, width: 100, flexShrink: 0 }}>
+                      <span style={{ width: 8, height: 8, borderRadius: '50%', background: getLanguageColor(repo.language) }} />
+                      <span style={{ fontSize: 12, color: '#7d8590', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{repo.language}</span>
                     </span>
                   )}
-                  <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: '#21262d' }}>
-                    <div className="h-full rounded-full" style={{ width: `${pct}%`, background: 'linear-gradient(90deg,#38bdf8,#818cf8)', transition: 'width 0.8s ease' }} />
+                  <div style={{ flex: 1, height: 6, background: '#21262d', borderRadius: 3, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${(repo.stargazers_count / maxStars) * 100}%`, background: 'linear-gradient(90deg,#1f6feb,#388bfd)', borderRadius: 3, transition: 'width 0.6s ease' }} />
                   </div>
-                  <span className="text-xs flex items-center gap-1 flex-shrink-0" style={{ color: '#f59e0b' }}>
-                    <Star size={11} /> {formatNumber(repo.stargazers_count)}
+                  <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, color: '#e3b341', fontWeight: 600, flexShrink: 0, width: 60, justifyContent: 'flex-end' }}>
+                    <Star size={12} /> {formatNumber(repo.stargazers_count)}
                   </span>
                 </a>
               );
@@ -110,6 +105,13 @@ export default function ChartsPage() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .responsive-grid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+          .responsive-grid-charts { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </AppShell>
   );
 }

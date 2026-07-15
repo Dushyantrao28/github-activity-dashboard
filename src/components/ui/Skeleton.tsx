@@ -1,25 +1,27 @@
-import { cn } from '@/lib/utils';
-
-export function Skeleton({ className, style }: { className?: string; style?: React.CSSProperties }) {
-  return <div className={cn('shimmer rounded-xl', className)} aria-hidden="true" style={{ background: '#161b22', ...style }} />;
+export function Skeleton({ width, height, borderRadius = 6, style = {} }: { width?: string | number; height?: string | number; borderRadius?: number; style?: React.CSSProperties }) {
+  return (
+    <div className="skeleton" style={{ width, height, borderRadius, ...style }} />
+  );
 }
 
 export function ProfileCardSkeleton() {
   return (
-    <div className="card" style={{ padding: '20px' }}>
-      <div className="flex items-start gap-4">
-        <Skeleton className="w-16 h-16 rounded-2xl flex-shrink-0" />
-        <div className="flex-1 space-y-2">
-          <Skeleton className="h-4 w-36" />
-          <Skeleton className="h-3 w-24" />
-          <Skeleton className="h-3 w-48" />
+    <div className="card" style={{ padding: 20 }}>
+      <div style={{ display: 'flex', gap: 14, marginBottom: 14 }}>
+        <Skeleton width={64} height={64} borderRadius={12} />
+        <div style={{ flex: 1 }}>
+          <Skeleton height={16} style={{ marginBottom: 8, width: '60%' }} />
+          <Skeleton height={12} style={{ marginBottom: 8, width: '40%' }} />
+          <Skeleton height={12} style={{ width: '80%' }} />
         </div>
       </div>
-      <div className="mt-5 pt-4 grid grid-cols-3 gap-3" style={{ borderTop: '1px solid #21262d' }}>
+      <Skeleton height={12} style={{ marginBottom: 6, width: '70%' }} />
+      <Skeleton height={12} style={{ marginBottom: 16, width: '50%' }} />
+      <div style={{ borderTop: '1px solid #21262d', paddingTop: 14, display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {[1,2,3].map(i => (
-          <div key={i} className="text-center space-y-1.5">
-            <Skeleton className="h-6 w-12 mx-auto" />
-            <Skeleton className="h-2.5 w-16 mx-auto" />
+          <div key={i} style={{ textAlign: 'center' }}>
+            <Skeleton height={20} style={{ marginBottom: 6, width: '60%', margin: '0 auto 6px' }} />
+            <Skeleton height={10} style={{ width: '80%', margin: '0 auto' }} />
           </div>
         ))}
       </div>
@@ -29,14 +31,14 @@ export function ProfileCardSkeleton() {
 
 export function RepoCardSkeleton() {
   return (
-    <div className="card" style={{ padding: '16px' }}>
-      <Skeleton className="h-4 w-32 mb-3" />
-      <Skeleton className="h-3 w-full mb-2" />
-      <Skeleton className="h-3 w-3/4 mb-4" />
-      <div className="flex gap-2 pt-3" style={{ borderTop: '1px solid #21262d' }}>
-        <Skeleton className="h-3 w-16" />
-        <Skeleton className="h-3 w-10" />
-        <Skeleton className="h-3 w-10" />
+    <div className="card" style={{ padding: 16 }}>
+      <Skeleton height={14} style={{ marginBottom: 10, width: '50%' }} />
+      <Skeleton height={12} style={{ marginBottom: 6, width: '100%' }} />
+      <Skeleton height={12} style={{ marginBottom: 16, width: '75%' }} />
+      <div style={{ borderTop: '1px solid #21262d', paddingTop: 10, display: 'flex', gap: 12 }}>
+        <Skeleton height={10} width={60} />
+        <Skeleton height={10} width={40} />
+        <Skeleton height={10} width={40} />
       </div>
     </div>
   );
@@ -45,9 +47,9 @@ export function RepoCardSkeleton() {
 export function ChartSkeleton() {
   return (
     <div className="card" style={{ padding: '20px 24px' }}>
-      <Skeleton className="h-4 w-40 mb-1" />
-      <Skeleton className="h-3 w-28 mb-5" />
-      <Skeleton className="w-full rounded-xl" style={{ height: '220px' }} />
+      <Skeleton height={15} style={{ marginBottom: 8, width: '35%' }} />
+      <Skeleton height={12} style={{ marginBottom: 24, width: '25%' }} />
+      <Skeleton height={220} style={{ borderRadius: 8 }} />
     </div>
   );
 }
@@ -55,9 +57,9 @@ export function ChartSkeleton() {
 export function HeatmapSkeleton() {
   return (
     <div className="card" style={{ padding: '20px 24px' }}>
-      <Skeleton className="h-4 w-48 mb-1" />
-      <Skeleton className="h-3 w-36 mb-5" />
-      <Skeleton className="w-full rounded-xl" style={{ height: '120px' }} />
+      <Skeleton height={15} style={{ marginBottom: 8, width: '40%' }} />
+      <Skeleton height={12} style={{ marginBottom: 20, width: '30%' }} />
+      <Skeleton height={110} style={{ borderRadius: 8 }} />
     </div>
   );
 }
