@@ -2,7 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { BookOpen, Code, Sparkles, Shield } from 'lucide-react';
+import { BookOpen, Code, Shield } from 'lucide-react';
 
 function GithubIcon({ size = 20 }: { size?: number }) {
   return (
@@ -67,31 +67,20 @@ export default function DocsPage() {
               <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--fg-default)' }}>Core Features</h2>
             </div>
             <ul style={{ color: 'var(--fg-muted)', lineHeight: 1.7, fontSize: 15, paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <li><strong>Contribution Heatmap:</strong> A visual grid showing your commit density over the past 365 days, modeled after GitHub's iconic graph but with richer data tooltips.</li>
-              <li><strong>Language Breakdown:</strong> A precise percentage split of all programming languages used across your public repositories.</li>
-              <li><strong>Top Repositories:</strong> Instantly sorts your repositories by star count, forks, and recent activity, allowing you to highlight your best work.</li>
+              <li><strong>GitHub OAuth Login:</strong> One-click sign in with GitHub. Session stored securely via NextAuth.</li>
+              <li><strong>User Profile Card:</strong> Display avatar, name, bio, location, company, blog, followers/following.</li>
+              <li><strong>Repository Grid:</strong> All public repos in a card layout. Show language badge, stars, forks, last updated.</li>
+              <li><strong>Repo Filtering & Sorting:</strong> Filter by language (dropdown). Sort by stars, forks, or recently updated.</li>
+              <li><strong>Contribution Heatmap:</strong> 12-month activity calendar (GitHub-style green squares) using commit data.</li>
+              <li><strong>Commit Frequency Chart:</strong> Bar or line chart showing commits per week/month over past year.</li>
+              <li><strong>Language Breakdown Chart:</strong> Doughnut chart showing top languages across all repos by bytes of code.</li>
+              <li><strong>Stats Summary Cards:</strong> Total repos, total stars, total forks, longest streak, most starred repo.</li>
+              <li><strong>Public Shareable URL:</strong> Any user's dashboard accessible at /[username] without login.</li>
+              <li><strong>Dark Mode:</strong> System-aware dark/light mode using beautiful tailored colors.</li>
+              <li><strong>Loading Skeletons:</strong> Shimmer placeholders while API data loads — no blank screens.</li>
+              <li><strong>Error & Empty States:</strong> Friendly messages for API errors, private accounts, or no repos.</li>
+              <li><strong>Responsive Design:</strong> Fully usable on mobile, tablet, and desktop.</li>
             </ul>
-          </section>
-
-          <section>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 16 }}>
-              <div style={{ padding: 8, borderRadius: 8, background: 'rgba(137,87,229,0.1)', color: '#bc8cff' }}>
-                <Sparkles size={20} />
-              </div>
-              <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--fg-default)' }}>AI Repository Summaries</h2>
-            </div>
-            <p style={{ color: 'var(--fg-muted)', lineHeight: 1.7, fontSize: 15, marginBottom: 16 }}>
-              GitPulse integrates with Google's Gemini AI to automatically read and summarize your repository's README and codebase structure.
-            </p>
-            <div style={{ background: 'var(--bg-overlay)', border: '1px solid var(--border-muted)', padding: 20, borderRadius: 12 }}>
-              <h4 style={{ color: 'var(--fg-default)', fontSize: 14, fontWeight: 600, marginBottom: 8 }}>How to use it:</h4>
-              <ol style={{ color: 'var(--fg-muted)', fontSize: 14, lineHeight: 1.6, paddingLeft: 20, margin: 0 }}>
-                <li>Navigate to any repository card in your dashboard or on the <code>/repos</code> page.</li>
-                <li>Click the <strong>✨ AI Summary</strong> button at the bottom of the card.</li>
-                <li>Wait a few seconds while the AI analyzes your README.md.</li>
-                <li>Review the generated summary, tech stack, and key features!</li>
-              </ol>
-            </div>
           </section>
 
           <section>
