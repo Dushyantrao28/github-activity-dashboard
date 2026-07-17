@@ -1,17 +1,20 @@
 import type { GithubRepo } from '@/types/github';
 import { Star, GitFork, ExternalLink } from 'lucide-react';
 import { formatNumber, timeAgo, getLanguageColor } from '@/lib/utils';
+import { RepoSummaryPanel } from '../repos/RepoSummaryPanel';
 
 export function PinnedRepoCard({ repo }: { repo: GithubRepo }) {
   return (
-    <a href={repo.html_url} target="_blank" rel="noopener noreferrer"
+    <div
       className="card card-hover"
       style={{ padding: '16px', display: 'flex', flexDirection: 'column', textDecoration: 'none', minHeight: 140 }}
     >
       {/* Repo name */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
-        <span style={{ fontSize: 14, fontWeight: 600, color: '#58a6ff', lineHeight: 1.3 }}>{repo.name}</span>
-        <ExternalLink size={12} style={{ color: 'var(--fg-subtle)', flexShrink: 0, marginTop: 2 }} />
+        <a href={repo.html_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: 14, fontWeight: 600, color: '#58a6ff', lineHeight: 1.3, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 5 }}>
+          {repo.name}
+          <ExternalLink size={12} style={{ color: 'var(--fg-subtle)', flexShrink: 0, marginTop: 2 }} />
+        </a>
       </div>
 
       {/* Description */}
@@ -30,7 +33,7 @@ export function PinnedRepoCard({ repo }: { repo: GithubRepo }) {
       )}
 
       {/* Footer */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #21262d' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid var(--border-muted)', marginBottom: 12 }}>
         {repo.language && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--fg-muted)' }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: getLanguageColor(repo.language) }} />
@@ -45,6 +48,14 @@ export function PinnedRepoCard({ repo }: { repo: GithubRepo }) {
         </div>
         <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--fg-subtle)' }}>Updated {timeAgo(repo.updated_at)}</span>
       </div>
-    </a>
+
+      <RepoSummaryPanel
+        repoFullName={repo.full_name}
+        repoName={repo.name}
+        description={repo.description}
+        language={repo.language}
+        topics={repo.topics || []}
+      />
+    </div>
   );
 }
