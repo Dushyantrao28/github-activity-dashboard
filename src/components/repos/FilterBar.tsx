@@ -29,7 +29,7 @@ const selectStyle: React.CSSProperties = {
 
 export function FilterBar({ search, onSearch, language, onLanguage, sort, onSort, languages, totalCount, filteredCount }: P) {
   return (
-    <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="filter-bar" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
       <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
         <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#484f58', pointerEvents: 'none' }} />
         <input

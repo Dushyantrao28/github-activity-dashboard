@@ -342,7 +342,72 @@ h1, h2, h3, h4, h5, h6 {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-/* ─── Responsive ─────────────────────────── */
+/* Responsive */
+
+@media (max-width: 1024px) {
+  .page-content {
+    padding: 24px 20px;
+  }
+  .responsive-grid-profile {
+    grid-template-columns: 1fr !important;
+  }
+  .responsive-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .responsive-grid-charts {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 @media (max-width: 768px) {
-  .page-content { padding: 20px 16px; }
+  .page-content {
+    padding: 16px 14px;
+  }
+  .repo-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .responsive-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .heatmap-cell {
+    width: 10px !important;
+    height: 10px !important;
+  }
+  .hidden-mobile {
+    display: none !important;
+  }
+  .show-mobile {
+    display: flex !important;
+  }
+  .card {
+    border-radius: 12px !important;
+  }
+  .preview-window {
+    display: none !important;
+  }
+  .filter-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  .filter-bar select {
+    width: 100% !important;
+    min-width: unset !important;
+  }
+  .filter-bar input {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .page-content {
+    padding: 12px 10px;
+  }
+  .responsive-grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+  .btn-github {
+    padding: 11px 20px !important;
+    font-size: 14px !important;
+  }
 }

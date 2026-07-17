@@ -32,8 +32,6 @@ export default function DashboardPage() {
   const topRepos = repos?.filter(r => !r.fork).sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 6) ?? [];
   const firstName = session?.user?.name?.split(' ')[0] ?? login ?? 'there';
 
-  const g = (v: string) => `<span style={{ color: '#58a6ff' }}>${v}</span>`;
-
   return (
     <AppShell>
       <div className="page-content">
@@ -46,14 +44,14 @@ export default function DashboardPage() {
           <p style={{ color: '#7d8590', fontSize: 14 }}>Overview of your GitHub activity and repository insights</p>
         </div>
 
-        {/* Profile + Stats */}
-        <div style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 16, marginBottom: 16, alignItems: 'start' }}  className="responsive-grid-profile">
+        {/* Profile + Stats — class handles responsive */}
+        <div className="responsive-grid-profile" style={{ display: 'grid', gridTemplateColumns: '320px 1fr', gap: 16, marginBottom: 16, alignItems: 'start' }}>
           <div>
             {uL ? <ProfileCardSkeleton /> : uE ? <ErrorCard message={uE.message} onRetry={uR} /> : user ? <AvatarCard user={user} /> : null}
           </div>
           <div>
             {uL || rL ? (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+              <div className="responsive-grid-4" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
                 {[1,2,3,4].map(i => <div key={i} className="skeleton" style={{ height: 100, borderRadius: 12 }} />)}
               </div>
             ) : user ? (
@@ -67,15 +65,15 @@ export default function DashboardPage() {
           {cL ? <HeatmapSkeleton /> : contributions ? <ContributionHeatmap data={contributions} username={login ?? ''} /> : null}
         </div>
 
-        {/* Charts row */}
-        <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 16, marginBottom: 24 }} className="responsive-grid-charts">
+        {/* Charts row — class handles responsive */}
+        <div className="responsive-grid-charts" style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', gap: 16, marginBottom: 24 }}>
           <div>{cmL ? <ChartSkeleton /> : commits && commits.length > 0 ? <CommitChart data={commits} /> : <EmptyState title="No commit data" description="No push events found in the last 6 months" />}</div>
           <div>{lL ? <ChartSkeleton /> : languages && languages.length > 0 ? <LanguageDonut data={languages} /> : <EmptyState title="No language data" />}</div>
         </div>
 
         {/* Top Repos */}
         <div style={{ marginBottom: 8 }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
             <div>
               <h2 style={{ fontSize: 16, fontWeight: 600 }}>Top Repositories</h2>
               <p style={{ fontSize: 13, color: '#7d8590', marginTop: 2 }}>Sorted by star count</p>
@@ -85,25 +83,16 @@ export default function DashboardPage() {
             </Link>
           </div>
           {rL ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+            <div className="repo-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
               {[1,2,3,4,5,6].map(i => <RepoCardSkeleton key={i} />)}
             </div>
           ) : topRepos.length > 0 ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
+            <div className="repo-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
               {topRepos.map(repo => <PinnedRepoCard key={repo.id} repo={repo} />)}
             </div>
           ) : <EmptyState icon={Star} title="No repositories" description="No public repositories found" />}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 960px) {
-          .responsive-grid-profile { grid-template-columns: 1fr !important; }
-        }
-        @media (max-width: 768px) {
-          .responsive-grid-charts { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </AppShell>
   );
 }

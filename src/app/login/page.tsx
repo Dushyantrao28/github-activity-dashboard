@@ -100,7 +100,7 @@ export default function LoginPage() {
           </div>
 
           {/* Dashboard preview window */}
-          <div className="animate-fade-up delay-300" style={{ background: '#161b22', border: '1px solid #30363d', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.6)', textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
+          <div className="animate-fade-up delay-300 preview-window" style={{ background: '#161b22', border: '1px solid #30363d', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.6)', textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
 
             {/* Window chrome */}
             <div style={{ padding: '12px 16px', borderBottom: '1px solid #21262d', display: 'flex', alignItems: 'center', gap: 8, background: '#1c2128' }}>
