@@ -182,28 +182,213 @@ export default function LoginPage() {
         </div>
       </main>
 
+      {/* ── Stats bar ──────────────── */}
+      <section style={{ borderTop: '1px solid #21262d', borderBottom: '1px solid #21262d', padding: '28px 24px', background: '#0d1117' }}>
+        <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 24 }}>
+          {[
+            { value: '100%', label: 'Free & Open Source' },
+            { value: 'GitHub API', label: 'Powered by REST + GraphQL' },
+            { value: '6 Pages', label: 'Dashboard, Charts, Repos & more' },
+            { value: 'Vercel', label: 'Edge-deployed globally' },
+          ].map(s => (
+            <div key={s.label} style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: '#e6edf3', letterSpacing: '-0.02em', marginBottom: 4 }}>{s.value}</div>
+              <div style={{ fontSize: 12, color: '#7d8590' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* ── Features section ──────────────── */}
-      <section id="features" style={{ padding: '80px 24px', borderTop: '1px solid #21262d' }}>
-        <div style={{ maxWidth: 960, margin: '0 auto' }}>
-          <h2 style={{ textAlign: 'center', fontSize: 28, fontWeight: 700, color: '#e6edf3', marginBottom: 8, letterSpacing: '-0.02em' }}>Everything you need to understand your GitHub</h2>
-          <p style={{ textAlign: 'center', color: '#7d8590', marginBottom: 48, fontSize: 15 }}>Built for developers who care about their craft</p>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 16 }}>
+      <section id="features" style={{ padding: '96px 24px', background: '#0d1117' }}>
+        <div style={{ maxWidth: 1100, margin: '0 auto' }}>
+
+          {/* Section header */}
+          <div style={{ textAlign: 'center', marginBottom: 64 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+              <span className="badge badge-purple" style={{ fontSize: 12, padding: '4px 12px' }}>Features</span>
+            </div>
+            <h2 style={{ fontSize: 36, fontWeight: 800, color: '#e6edf3', letterSpacing: '-0.03em', marginBottom: 12, lineHeight: 1.15 }}>
+              Everything you need to understand
+              <br />
+              <span style={{ background: 'linear-gradient(135deg,#58a6ff,#bc8cff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                your GitHub activity
+              </span>
+            </h2>
+            <p style={{ color: '#7d8590', fontSize: 16, maxWidth: 520, margin: '0 auto', lineHeight: 1.65 }}>
+              Built for developers who take their craft seriously. Real data, beautiful visualizations, zero fluff.
+            </p>
+          </div>
+
+          {/* Feature grid — 3 cols on desktop, 2 on tablet, 1 on mobile */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: '#21262d', borderRadius: 20, overflow: 'hidden', border: '1px solid #21262d' }}>
             {[
-              { emoji: '🟩', title: 'Contribution Heatmap', desc: 'Full year of activity visualized in a GitHub-style grid with hover details' },
-              { emoji: '📈', title: 'Commit Analytics', desc: 'Bar and area charts showing push frequency over the last 6 months' },
-              { emoji: '🔍', title: 'Repo Explorer', desc: 'Search, filter by language, sort by stars, forks, or last updated' },
-              { emoji: '🌐', title: 'Language Stats', desc: 'Donut chart breakdown of your codebase by programming language' },
-              { emoji: '👤', title: 'Profile Explorer', desc: 'View any public GitHub user profile — search by username' },
-              { emoji: '⚡', title: 'Real-time Data', desc: 'Live data from GitHub REST & GraphQL API with intelligent caching' },
-            ].map((f) => (
-              <div key={f.title} className="card" style={{ padding: '20px 22px' }}>
-                <div style={{ fontSize: 24, marginBottom: 12 }}>{f.emoji}</div>
-                <h3 style={{ fontSize: 14, fontWeight: 600, color: '#e6edf3', marginBottom: 6 }}>{f.title}</h3>
-                <p style={{ fontSize: 13, color: '#7d8590', lineHeight: 1.5 }}>{f.desc}</p>
+              {
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <rect x="3" y="3" width="4" height="4" rx="1" fill="#3fb950" stroke="none" />
+                    <rect x="9" y="3" width="4" height="4" rx="1" fill="#006d32" stroke="none" />
+                    <rect x="15" y="3" width="4" height="4" rx="1" fill="#26a641" stroke="none" />
+                    <rect x="3" y="9" width="4" height="4" rx="1" fill="#0e4429" stroke="none" />
+                    <rect x="9" y="9" width="4" height="4" rx="1" fill="#3fb950" stroke="none" />
+                    <rect x="15" y="9" width="4" height="4" rx="1" fill="#39d353" stroke="none" />
+                    <rect x="3" y="15" width="4" height="4" rx="1" fill="#26a641" stroke="none" />
+                    <rect x="9" y="15" width="4" height="4" rx="1" fill="#0e4429" stroke="none" />
+                    <rect x="15" y="15" width="4" height="4" rx="1" fill="#006d32" stroke="none" />
+                  </svg>
+                ),
+                color: '#3fb950',
+                bg: 'rgba(63,185,80,0.08)',
+                title: 'Contribution Heatmap',
+                desc: 'Full 12-month activity calendar in the classic GitHub green grid with hover tooltips showing exact counts per day.',
+                tag: 'GraphQL API',
+              },
+              {
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                  </svg>
+                ),
+                color: '#58a6ff',
+                bg: 'rgba(88,166,255,0.08)',
+                title: 'Commit Frequency',
+                desc: 'Interactive bar and area charts showing your push frequency over the past 6 months. Toggle between chart types.',
+                tag: 'Recharts',
+              },
+              {
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#bc8cff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    <line x1="11" y1="8" x2="11" y2="14" />
+                    <line x1="8" y1="11" x2="14" y2="11" />
+                  </svg>
+                ),
+                color: '#bc8cff',
+                bg: 'rgba(188,140,255,0.08)',
+                title: 'Repo Explorer',
+                desc: 'Browse all your public repos in a filterable grid. Search by name, filter by language, sort by stars, forks, or date.',
+                tag: 'REST API',
+              },
+              {
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e3b341" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32" />
+                  </svg>
+                ),
+                color: '#e3b341',
+                bg: 'rgba(227,179,65,0.08)',
+                title: 'Language Breakdown',
+                desc: 'Animated donut chart showing the exact percentage split of your codebase across all programming languages.',
+                tag: 'Recharts',
+              },
+              {
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff7b72" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                ),
+                color: '#ff7b72',
+                bg: 'rgba(255,123,114,0.08)',
+                title: 'Profile Explorer',
+                desc: 'Search any GitHub username to view their full public profile — avatar, bio, stats, heatmap and top repos. No login needed.',
+                tag: 'Public route',
+              },
+              {
+                icon: (
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#58a6ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                  </svg>
+                ),
+                color: '#58a6ff',
+                bg: 'rgba(88,166,255,0.08)',
+                title: 'Real-time GitHub Data',
+                desc: 'Live REST and GraphQL API calls with React Query caching. Streaks, stars, forks, and gists all updated on every session.',
+                tag: 'React Query',
+              },
+            ].map((f, i) => (
+              <div key={f.title} style={{
+                background: '#0d1117',
+                padding: '32px 28px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 16,
+                position: 'relative',
+                transition: 'background 0.2s',
+              }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#161b22'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0d1117'; }}
+              >
+                {/* Top accent line on hover */}
+                <div style={{ position: 'absolute', top: 0, left: 28, right: 28, height: 1, background: `linear-gradient(90deg, transparent, ${f.color}40, transparent)` }} />
+
+                {/* Icon */}
+                <div style={{
+                  width: 44, height: 44, borderRadius: 10,
+                  background: f.bg,
+                  border: `1px solid ${f.color}25`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0,
+                }}>
+                  {f.icon}
+                </div>
+
+                {/* Text */}
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#e6edf3' }}>{f.title}</h3>
+                  </div>
+                  <p style={{ fontSize: 13, color: '#7d8590', lineHeight: 1.6 }}>{f.desc}</p>
+                </div>
+
+                {/* Tag */}
+                <div style={{ marginTop: 'auto' }}>
+                  <span style={{
+                    fontSize: 11, padding: '3px 10px', borderRadius: 20,
+                    background: `${f.color}12`, color: f.color,
+                    border: `1px solid ${f.color}25`, fontWeight: 500,
+                  }}>{f.tag}</span>
+                </div>
               </div>
             ))}
           </div>
+
+          {/* Bottom CTA */}
+          <div style={{ textAlign: 'center', marginTop: 56 }}>
+            <p style={{ color: '#7d8590', fontSize: 14, marginBottom: 20 }}>
+              Ready to see your GitHub story?
+            </p>
+            <button
+              onClick={() => { if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+              style={{
+                padding: '12px 28px', borderRadius: 10, border: '1px solid #30363d',
+                background: '#161b22', color: '#e6edf3', fontSize: 14, fontWeight: 500,
+                cursor: 'pointer', transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#58a6ff'; (e.currentTarget as HTMLElement).style.color = '#58a6ff'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#30363d'; (e.currentTarget as HTMLElement).style.color = '#e6edf3'; }}
+            >
+              ↑ Back to top
+            </button>
+          </div>
+
         </div>
+
+        {/* Responsive style for features grid */}
+        <style>{`
+          @media (max-width: 900px) {
+            #features > div > div[style*="repeat(3"] {
+              grid-template-columns: repeat(2, 1fr) !important;
+            }
+          }
+          @media (max-width: 560px) {
+            #features > div > div[style*="repeat(3"] {
+              grid-template-columns: 1fr !important;
+            }
+          }
+        `}</style>
       </section>
 
       {/* ── Footer ──────────────────────── */}
