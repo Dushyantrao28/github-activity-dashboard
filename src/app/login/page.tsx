@@ -3,6 +3,7 @@
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { ContactSection } from '@/components/layout/ContactSection';
 
 function GithubIcon({ size = 20 }: { size?: number }) {
   return (
@@ -390,6 +391,8 @@ export default function LoginPage() {
           }
         `}</style>
       </section>
+
+      <ContactSection />
 
       {/* ── Footer ──────────────────────── */}
       <footer style={{ borderTop: '1px solid #21262d', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
