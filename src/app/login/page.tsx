@@ -357,23 +357,7 @@ export default function LoginPage() {
           </div>
 
           {/* Bottom CTA */}
-          <div style={{ textAlign: 'center', marginTop: 56 }}>
-            <p style={{ color: 'var(--fg-muted)', fontSize: 14, marginBottom: 20 }}>
-              Ready to see your GitHub story?
-            </p>
-            <button
-              onClick={() => { if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              style={{
-                padding: '12px 28px', borderRadius: 10, border: '1px solid #30363d',
-                background: 'var(--bg-overlay)', color: 'var(--fg-default)', fontSize: 14, fontWeight: 500,
-                cursor: 'pointer', transition: 'all 0.15s',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#58a6ff'; (e.currentTarget as HTMLElement).style.color = '#58a6ff'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-default)'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-default)'; }}
-            >
-              ↑ Back to top
-            </button>
-          </div>
+
 
         </div>
 
@@ -393,6 +377,24 @@ export default function LoginPage() {
       </section>
 
       <ContactSection />
+
+      <div style={{ textAlign: 'center', padding: '0 24px 64px 24px', background: 'var(--bg-canvas)' }}>
+        <p style={{ color: 'var(--fg-muted)', fontSize: 14, marginBottom: 20 }}>
+          Ready to see your GitHub story?
+        </p>
+        <button
+          onClick={() => { if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+          style={{
+            padding: '12px 28px', borderRadius: 10, border: '1px solid var(--border-default)',
+            background: 'var(--bg-overlay)', color: 'var(--fg-default)', fontSize: 14, fontWeight: 500,
+            cursor: 'pointer', transition: 'all 0.15s',
+          }}
+          onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#58a6ff'; (e.currentTarget as HTMLElement).style.color = '#58a6ff'; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-default)'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-default)'; }}
+        >
+          ↑ Back to top
+        </button>
+      </div>
 
       {/* ── Footer ──────────────────────── */}
       <footer style={{ borderTop: '1px solid #21262d', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
