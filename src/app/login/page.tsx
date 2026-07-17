@@ -71,7 +71,7 @@ export default function LoginPage() {
           <div className="animate-fade-up" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 28 }}>
             <span className="badge badge-green">
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#3fb950', display: 'inline-block' }} className="animate-pulse" />
-              Open Source · Internship Project
+              Advanced GitHub Analytics
             </span>
           </div>
 
@@ -401,7 +401,7 @@ export default function LoginPage() {
       <footer style={{ borderTop: '1px solid #21262d', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <GithubIcon size={16} />
-          <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>GitPulse · Built during 30-day internship</span>
+          <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>GitPulse · Advanced GitHub Analytics</span>
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
           <a href="#" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Privacy</a>

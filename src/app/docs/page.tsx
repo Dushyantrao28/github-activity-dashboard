@@ -102,7 +102,7 @@ export default function DocsPage() {
       <footer style={{ borderTop: '1px solid var(--border-muted)', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <GithubIcon size={16} />
-          <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>GitPulse · Built during 30-day internship</span>
+          <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>GitPulse · Advanced GitHub Analytics</span>
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
           <Link href="/login" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Home</Link>
