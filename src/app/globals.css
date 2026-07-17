@@ -32,6 +32,23 @@
   --radius-xl:      24px;
 }
 
+html[data-theme="light"] {
+  --bg-canvas:      #ffffff;
+  --bg-overlay:     #f6f8fa;
+  --bg-subtle:      #eaeef2;
+  --border-default: #d0d7de;
+  --border-muted:   #e1e4e8;
+  --fg-default:     #1f2328;
+  --fg-muted:       #656d76;
+  --fg-subtle:      #9198a1;
+  --accent-blue:    #0969da;
+  --accent-blue-dk: #0550ae;
+  --accent-green:   #1a7f37;
+  --accent-purple:  #8250df;
+  --accent-orange:  #9a6700;
+  --accent-red:     #d1242f;
+}
+
 html {
   scroll-behavior: smooth;
   height: 100%;

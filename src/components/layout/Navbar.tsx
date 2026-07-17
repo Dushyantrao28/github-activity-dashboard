@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { LayoutDashboard, User, GitBranch, BarChart3, LogOut, Search, Menu, X, ChevronDown, Bell } from 'lucide-react';
+import { LayoutDashboard, User, GitBranch, BarChart3, LogOut, Search, Menu, X, ChevronDown, Moon, Sun } from 'lucide-react';
+import { useTheme } from '@/hooks/useTheme';
 
 function GithubIcon({ size = 16 }: { size?: number }) {
   return (
@@ -28,6 +29,7 @@ export function Navbar() {
   const [q, setQ]           = useState('');
   const [mobile, setMobile] = useState(false);
   const [menu, setMenu]     = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
 
   const user  = session?.user;
   const login = (session as any)?.user?.login;
@@ -84,6 +86,24 @@ export function Navbar() {
               style={{ paddingLeft: 32, paddingRight: 12, paddingTop: 6, paddingBottom: 6, width: 180, fontSize: 13 }}
             />
           </form>
+
+          {/* Theme toggle */}
+          <button
+            id="theme-toggle-btn"
+            onClick={toggleTheme}
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+            className="hidden-mobile"
+            style={{
+              background: 'transparent', border: '1px solid var(--border-default)',
+              borderRadius: 8, padding: '5px 8px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: 'var(--fg-muted)', flexShrink: 0, transition: 'all 0.15s',
+            }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-subtle)'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-default)'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-muted)'; }}
+          >
+            {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
+          </button>
 
           {/* User */}
           {user && (
