@@ -127,9 +127,8 @@ export function Navbar() {
               {menu && (
                 <div className="animate-slide-down" style={{
                   position: 'absolute', right: 0, top: 'calc(100% + 8px)',
-                  background: '#161b22', border: '1px solid #30363d', borderRadius: 12,
+                  background: 'var(--bg-overlay)', border: '1px solid var(--border-default)', borderRadius: 12,
                   minWidth: 220, boxShadow: '0 8px 32px rgba(0,0,0,0.5)', overflow: 'hidden', zIndex: 200,
-                  background: 'var(--bg-overlay)', border: '1px solid var(--border-default)'
                 }}>
                   <div style={{ padding: '12px 16px 10px', borderBottom: '1px solid var(--border-muted)' }}>
                     <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--fg-default)' }}>{user.name}</div>

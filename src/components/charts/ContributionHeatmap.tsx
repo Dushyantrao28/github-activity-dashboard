@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { ContributionData } from '@/types/github';
 import { formatNumber } from '@/lib/utils';
 
-const LEVELS = ['var(--bg-overlay)', '#0e4429', '#006d32', '#26a641', '#39d353'];
+const LEVELS = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 export function ContributionHeatmap({ data, username }: { data: ContributionData; username: string }) {
