@@ -14,7 +14,7 @@ export function ContactSection() {
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/singhdushyant465@gmail.com", {
+      const res = await fetch("https://formsubmit.co/ajax/874f01939afaf5a0a2b7c06afefddb37", {
         method: "POST",
         headers: { 
           'Content-Type': 'application/json',
