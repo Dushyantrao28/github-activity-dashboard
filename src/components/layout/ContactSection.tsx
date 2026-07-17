@@ -52,7 +52,9 @@ export function ContactSection() {
 
         {/* Right Side */}
         <div style={{ background: 'var(--bg-overlay)', padding: 32, borderRadius: 16, border: '1px solid var(--border-muted)', boxShadow: '0 4px 24px rgba(0,0,0,0.2)' }}>
-          <form action="https://formsubmit.co/singhdushyant465@gmail.com" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          <form action="https://api.web3forms.com/submit" method="POST" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+            {/* Web3Forms Access Key */}
+            <input type="hidden" name="access_key" value="3d90096f-d1cc-4954-930e-49b3a1fb2978" />
             <div>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 500, color: 'var(--fg-default)', marginBottom: 8 }}>Full Name</label>
               <input type="text" name="name" required placeholder="John Doe" style={{ width: '100%', padding: '12px 16px', background: 'var(--bg-canvas)', border: '1px solid var(--border-muted)', borderRadius: 8, color: 'var(--fg-default)', fontSize: 14, outline: 'none' }} />
@@ -70,10 +72,9 @@ export function ContactSection() {
 
             {/* Hidden field to prevent spam */}
             <input type="text" name="_honey" style={{ display: 'none' }} />
-            {/* Disable FormSubmit captchas */}
-            <input type="hidden" name="_captcha" value="false" />
-            {/* Redirect back to site after submission */}
-            <input type="hidden" name="_next" value="https://github-activity-dashboard-iota.vercel.app/login" />
+            {/* Web3Forms specific hidden fields (optional but recommended) */}
+            <input type="checkbox" name="botcheck" style={{ display: 'none' }} />
+            <input type="hidden" name="redirect" value="https://github-activity-dashboard-iota.vercel.app/login" />
 
             <button type="submit" className="button-hover" style={{ width: '100%', padding: '14px', background: '#c0b3c6', color: '#161b22', border: 'none', borderRadius: 8, fontSize: 15, fontWeight: 700, cursor: 'pointer', marginTop: 8, transition: 'all 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
               Send Message
