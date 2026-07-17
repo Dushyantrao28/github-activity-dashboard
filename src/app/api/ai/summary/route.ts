@@ -47,7 +47,7 @@ Rules:
 - features: exactly 3-5 bullet-point style items`;
 
     const geminiRes = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,7 +65,16 @@ Rules:
     if (!geminiRes.ok) {
       const err = await geminiRes.text();
       console.error('Gemini error:', err);
-      return NextResponse.json({ error: 'AI generation failed' }, { status: 500 });
+      let errorMsg = 'AI generation failed';
+      try {
+        const parsedErr = JSON.parse(err);
+        if (parsedErr.error && parsedErr.error.message) {
+          errorMsg = parsedErr.error.message;
+        }
+      } catch {
+        errorMsg = err || 'AI generation failed';
+      }
+      return NextResponse.json({ error: errorMsg }, { status: 500 });
     }
 
     const geminiData = await geminiRes.json();
