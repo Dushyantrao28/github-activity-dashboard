@@ -19,25 +19,25 @@ export function AvatarCard({ user }: { user: GithubUser }) {
           <img
             src={user.avatar_url}
             alt={user.login}
-            style={{ width: 64, height: 64, borderRadius: 12, border: '2px solid #30363d', display: 'block' }}
+            style={{ width: 64, height: 64, borderRadius: 12, border: '2px solid var(--border-default)', display: 'block' }}
           />
           <div style={{
             position: 'absolute', bottom: -2, right: -2,
             width: 14, height: 14, borderRadius: '50%',
-            background: '#3fb950', border: '2px solid #161b22'
+            background: 'var(--accent-green)', border: '2px solid var(--bg-overlay)'
           }} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: '#e6edf3', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <div style={{ fontSize: 16, fontWeight: 700, color: 'var(--fg-default)', letterSpacing: '-0.01em', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {user.name ?? user.login}
           </div>
           <a href={user.html_url} target="_blank" rel="noopener noreferrer"
-            style={{ fontSize: 13, color: '#58a6ff', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 2 }}
+            style={{ fontSize: 13, color: 'var(--accent-blue)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 4, marginTop: 2 }}
           >
             @{user.login} <ExternalLink size={10} />
           </a>
           {user.bio && (
-            <p style={{ fontSize: 12, color: '#7d8590', marginTop: 8, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+            <p style={{ fontSize: 12, color: 'var(--fg-muted)', marginTop: 8, lineHeight: 1.5, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
               {user.bio}
             </p>
           )}
@@ -47,18 +47,18 @@ export function AvatarCard({ user }: { user: GithubUser }) {
       {/* Meta */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 14 }}>
         {user.company && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#7d8590' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--fg-muted)' }}>
             <Building2 size={12} style={{ flexShrink: 0 }} /> <span>{user.company}</span>
           </div>
         )}
         {user.location && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#7d8590' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--fg-muted)' }}>
             <MapPin size={12} style={{ flexShrink: 0 }} /> <span>{user.location}</span>
           </div>
         )}
         {user.blog && (
           <a href={user.blog.startsWith('http') ? user.blog : `https://${user.blog}`} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#58a6ff', textDecoration: 'none' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--accent-blue)', textDecoration: 'none' }}
           >
             <Link2 size={12} style={{ flexShrink: 0 }} />
             <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
@@ -68,31 +68,31 @@ export function AvatarCard({ user }: { user: GithubUser }) {
         )}
         {user.twitter_username && (
           <a href={`https://twitter.com/${user.twitter_username}`} target="_blank" rel="noopener noreferrer"
-            style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#7d8590', textDecoration: 'none' }}
+            style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--fg-muted)', textDecoration: 'none' }}
           >
             <XIcon /> <span>@{user.twitter_username}</span>
           </a>
         )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: '#7d8590' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 12, color: 'var(--fg-muted)' }}>
           <CalendarDays size={12} style={{ flexShrink: 0 }} /> <span>Joined {formatDate(user.created_at)}</span>
         </div>
       </div>
 
       {/* Stats */}
-      <div style={{ borderTop: '1px solid #21262d', paddingTop: 14, display: 'flex', justifyContent: 'space-around' }}>
+      <div style={{ borderTop: '1px solid var(--border-muted)', paddingTop: 14, display: 'flex', justifyContent: 'space-around' }}>
         <a href={`${user.html_url}?tab=followers`} target="_blank" rel="noopener noreferrer" style={{ textAlign: 'center', textDecoration: 'none' }}>
-          <div style={{ fontSize: 18, fontWeight: 700, color: '#e6edf3' }}>{formatNumber(user.followers)}</div>
-          <div style={{ fontSize: 11, color: '#7d8590', marginTop: 2, display: 'flex', alignItems: 'center', gap: 3, justifyContent: 'center' }}><Users size={10}/> followers</div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--fg-default)' }}>{formatNumber(user.followers)}</div>
+          <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2, display: 'flex', alignItems: 'center', gap: 3, justifyContent: 'center' }}><Users size={10}/> followers</div>
         </a>
-        <div style={{ width: 1, background: '#21262d' }} />
+        <div style={{ width: 1, background: 'var(--border-muted)' }} />
         <a href={`${user.html_url}?tab=following`} target="_blank" rel="noopener noreferrer" style={{ textAlign: 'center', textDecoration: 'none' }}>
-          <div style={{ fontSize: 18, fontWeight: 700, color: '#e6edf3' }}>{formatNumber(user.following)}</div>
-          <div style={{ fontSize: 11, color: '#7d8590', marginTop: 2 }}>following</div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--fg-default)' }}>{formatNumber(user.following)}</div>
+          <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2 }}>following</div>
         </a>
-        <div style={{ width: 1, background: '#21262d' }} />
+        <div style={{ width: 1, background: 'var(--border-muted)' }} />
         <a href={`${user.html_url}?tab=repositories`} target="_blank" rel="noopener noreferrer" style={{ textAlign: 'center', textDecoration: 'none' }}>
-          <div style={{ fontSize: 18, fontWeight: 700, color: '#e6edf3' }}>{formatNumber(user.public_repos)}</div>
-          <div style={{ fontSize: 11, color: '#7d8590', marginTop: 2, display: 'flex', alignItems: 'center', gap: 3, justifyContent: 'center' }}><BookOpen size={10}/> repos</div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--fg-default)' }}>{formatNumber(user.public_repos)}</div>
+          <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 2, display: 'flex', alignItems: 'center', gap: 3, justifyContent: 'center' }}><BookOpen size={10}/> repos</div>
         </a>
       </div>
     </div>

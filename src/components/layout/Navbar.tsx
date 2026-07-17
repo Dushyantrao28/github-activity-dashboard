@@ -43,10 +43,11 @@ export function Navbar() {
     <>
       <nav style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        background: 'rgba(13,17,23,0.95)',
-        borderBottom: '1px solid #21262d',
+        background: 'var(--bg-canvas)',
+        borderBottom: '1px solid var(--border-muted)',
         backdropFilter: 'blur(12px)',
         WebkitBackdropFilter: 'blur(12px)',
+        transition: 'background 0.2s',
       }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 24px', height: 60, display: 'flex', alignItems: 'center', gap: 16 }}>
 
@@ -55,7 +56,7 @@ export function Navbar() {
             <div style={{ width: 28, height: 28, borderRadius: 6, background: 'linear-gradient(135deg,#1f6feb,#8957e5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <GithubIcon size={15} />
             </div>
-            <span style={{ fontSize: 15, fontWeight: 700, color: '#e6edf3', letterSpacing: '-0.02em' }}>GitPulse</span>
+            <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--fg-default)', letterSpacing: '-0.02em' }}>GitPulse</span>
           </Link>
 
           {/* Divider */}
@@ -127,23 +128,24 @@ export function Navbar() {
                 <div className="animate-slide-down" style={{
                   position: 'absolute', right: 0, top: 'calc(100% + 8px)',
                   background: '#161b22', border: '1px solid #30363d', borderRadius: 12,
-                  minWidth: 220, boxShadow: '0 8px 32px rgba(0,0,0,0.5)', overflow: 'hidden', zIndex: 200
+                  minWidth: 220, boxShadow: '0 8px 32px rgba(0,0,0,0.5)', overflow: 'hidden', zIndex: 200,
+                  background: 'var(--bg-overlay)', border: '1px solid var(--border-default)'
                 }}>
-                  <div style={{ padding: '12px 16px 10px', borderBottom: '1px solid #21262d' }}>
-                    <div style={{ fontWeight: 600, fontSize: 14, color: '#e6edf3' }}>{user.name}</div>
-                    <div style={{ fontSize: 12, color: '#7d8590', marginTop: 1 }}>@{login}</div>
+                  <div style={{ padding: '12px 16px 10px', borderBottom: '1px solid var(--border-muted)' }}>
+                    <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--fg-default)' }}>{user.name}</div>
+                    <div style={{ fontSize: 12, color: 'var(--fg-muted)', marginTop: 1 }}>@{login}</div>
                   </div>
                   <div style={{ padding: '6px' }}>
                     {NAV_ITEMS.map(({ href, label, icon: Icon }) => (
                       <Link key={href} href={href} onClick={() => setMenu(false)}
-                        style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 6, fontSize: 14, color: '#7d8590', textDecoration: 'none', transition: 'all 0.1s' }}
-                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#1c2128'; (e.currentTarget as HTMLElement).style.color = '#e6edf3'; }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = '#7d8590'; }}
+                        style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 10px', borderRadius: 6, fontSize: 14, color: 'var(--fg-muted)', textDecoration: 'none', transition: 'all 0.1s' }}
+                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-subtle)'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-default)'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-muted)'; }}
                       >
                         <Icon size={14} />{label}
                       </Link>
                     ))}
-                    <div style={{ borderTop: '1px solid #21262d', margin: '6px 0' }} />
+                    <div style={{ borderTop: '1px solid var(--border-muted)', margin: '6px 0' }} />
                     <button
                       id="logout-btn"
                       onClick={() => signOut({ callbackUrl: '/login' })}
@@ -161,7 +163,7 @@ export function Navbar() {
 
           {/* Mobile toggle */}
           <button onClick={() => setMobile(!mobile)} className="show-mobile"
-            style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: '#7d8590', padding: 6, display: 'none' }}
+            style={{ background: 'transparent', border: 'none', cursor: 'pointer', color: 'var(--fg-muted)', padding: 6, display: 'none' }}
           >
             {mobile ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -169,7 +171,7 @@ export function Navbar() {
 
         {/* Mobile nav */}
         {mobile && (
-          <div className="animate-slide-down" style={{ borderTop: '1px solid #21262d', padding: '12px 16px', background: '#0d1117' }}>
+          <div className="animate-slide-down" style={{ borderTop: '1px solid var(--border-muted)', padding: '12px 16px', background: 'var(--bg-canvas)' }}>
             <form onSubmit={handleSearch} style={{ position: 'relative', marginBottom: 10 }}>
               <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#484f58', pointerEvents: 'none' }} />
               <input className="input" type="text" placeholder="Search GitHub user..." value={q}

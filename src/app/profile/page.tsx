@@ -35,13 +35,13 @@ function ProfileContent() {
       <div className="page-content">
         <div className="animate-fade-up" style={{ marginBottom: 24 }}>
           <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 4 }}>Profile Explorer</h1>
-          <p style={{ color: '#7d8590', fontSize: 14 }}>View any GitHub user&apos;s public profile and activity</p>
+          <p style={{ color: 'var(--fg-muted)', fontSize: 14 }}>View any GitHub user&apos;s public profile and activity</p>
         </div>
 
         {/* Search */}
         <form onSubmit={e => { e.preventDefault(); if (input.trim()) router.push(`/profile?user=${encodeURIComponent(input.trim())}`); }} style={{ display: 'flex', gap: 8, marginBottom: 24, maxWidth: 480 }}>
           <div style={{ position: 'relative', flex: 1 }}>
-            <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#484f58', pointerEvents: 'none' }} />
+            <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--fg-subtle)', pointerEvents: 'none' }} />
             <input
               id="profile-search-input"
               className="input"
@@ -86,9 +86,9 @@ function ProfileContent() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
             <div>
               <h2 style={{ fontSize: 16, fontWeight: 600 }}>Top Repositories</h2>
-              <p style={{ fontSize: 13, color: '#7d8590', marginTop: 2 }}>Sorted by stars, excluding forks</p>
+              <p style={{ fontSize: 13, color: 'var(--fg-muted)', marginTop: 2 }}>Sorted by stars, excluding forks</p>
             </div>
-            {repos && <span style={{ fontSize: 13, color: '#7d8590' }}>{repos.length} total</span>}
+            {repos && <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>{repos.length} total</span>}
           </div>
           {rL ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>
@@ -107,5 +107,5 @@ function ProfileContent() {
 }
 
 export default function ProfilePage() {
-  return <Suspense fallback={<div style={{ minHeight: '100vh', background: '#0d1117' }} />}><ProfileContent /></Suspense>;
+  return <Suspense fallback={<div style={{ minHeight: '100vh', background: 'var(--bg-canvas)' }} />}><ProfileContent /></Suspense>;
 }

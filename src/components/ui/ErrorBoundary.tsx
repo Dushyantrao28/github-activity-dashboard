@@ -24,8 +24,8 @@ export function ErrorCard({ message, onRetry }: { message: string; onRetry?: () 
         <AlertTriangle size={18} style={{ color: '#f85149' }} />
       </div>
       <div>
-        <p style={{ fontWeight: 600, color: '#e6edf3', marginBottom: 4 }}>Failed to load data</p>
-        <p style={{ fontSize: 13, color: '#7d8590', maxWidth: 280 }}>{message}</p>
+        <p style={{ fontWeight: 600, color: 'var(--fg-default)', marginBottom: 4 }}>Failed to load data</p>
+        <p style={{ fontSize: 13, color: 'var(--fg-muted)', maxWidth: 280 }}>{message}</p>
       </div>
       {onRetry && (
         <button onClick={onRetry} className="btn btn-secondary" style={{ padding: '7px 16px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>

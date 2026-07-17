@@ -13,7 +13,7 @@ function GithubIcon({ size = 20 }: { size?: number }) {
 }
 
 const HEATMAP_DATA = [0,0,1,0,2,0,0,3,1,0,0,2,4,3,1,0,2,0,1,3,2,0,0,3,4,0,1,0,2,1,3,0,0,2,1,4,0,3,2,0,1,0,2,3,0,0,4,2,1,0,3,0,2,1,4,0,0,3,2,1,0,4,0,2,1,3,0,0,2,1];
-const HEAT_COLORS = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+const HEAT_COLORS = ['var(--bg-overlay)', '#0e4429', '#006d32', '#26a641', '#39d353'];
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
@@ -25,14 +25,14 @@ export default function LoginPage() {
 
   if (status === 'loading') {
     return (
-      <div style={{ minHeight: '100vh', background: '#0d1117', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ minHeight: '100vh', background: 'var(--bg-canvas)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <div style={{ width: 28, height: 28, border: '2px solid #30363d', borderTopColor: '#58a6ff', borderRadius: '50%' }} className="animate-spin" />
       </div>
     );
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0d1117', display: 'flex', flexDirection: 'column' }}>
+    <div style={{ minHeight: '100vh', background: 'var(--bg-canvas)', display: 'flex', flexDirection: 'column' }}>
 
       {/* ── Top nav bar ─────────────────── */}
       <header style={{ borderBottom: '1px solid #21262d', padding: '14px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -40,11 +40,11 @@ export default function LoginPage() {
           <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg,#1f6feb,#8957e5)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <GithubIcon size={18} />
           </div>
-          <span style={{ fontSize: 16, fontWeight: 700, color: '#e6edf3', letterSpacing: '-0.02em' }}>GitPulse</span>
+          <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--fg-default)', letterSpacing: '-0.02em' }}>GitPulse</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-          <a href="#features" style={{ fontSize: 13, color: '#7d8590', textDecoration: 'none' }}>Features</a>
-          <a href="#" style={{ fontSize: 13, color: '#7d8590', textDecoration: 'none' }}>Docs</a>
+          <a href="#features" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Features</a>
+          <a href="#" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Docs</a>
           <button
             onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
             className="btn btn-github"
@@ -74,14 +74,14 @@ export default function LoginPage() {
           </div>
 
           {/* Headline */}
-          <h1 className="animate-fade-up delay-50" style={{ fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.03em', color: '#e6edf3', marginBottom: 20 }}>
+          <h1 className="animate-fade-up delay-50" style={{ fontSize: 'clamp(36px, 6vw, 64px)', fontWeight: 800, lineHeight: 1.1, letterSpacing: '-0.03em', color: 'var(--fg-default)', marginBottom: 20 }}>
             Your GitHub activity,
             <br />
             <span className="gradient-text">beautifully visualized.</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="animate-fade-up delay-100" style={{ fontSize: 18, color: '#7d8590', lineHeight: 1.65, marginBottom: 40, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
+          <p className="animate-fade-up delay-100" style={{ fontSize: 18, color: 'var(--fg-muted)', lineHeight: 1.65, marginBottom: 40, maxWidth: 560, marginLeft: 'auto', marginRight: 'auto' }}>
             GitPulse transforms your GitHub data into stunning contribution heatmaps, commit analytics, language breakdowns, and repository insights.
           </p>
 
@@ -96,21 +96,21 @@ export default function LoginPage() {
               <GithubIcon size={18} />
               Continue with GitHub — it&apos;s free
             </button>
-            <p style={{ fontSize: 12, color: '#484f58' }}>No credit card · Only reads public data · Open source</p>
+            <p style={{ fontSize: 12, color: 'var(--fg-subtle)' }}>No credit card · Only reads public data · Open source</p>
           </div>
 
           {/* Dashboard preview window */}
-          <div className="animate-fade-up delay-300 preview-window" style={{ background: '#161b22', border: '1px solid #30363d', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.6)', textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
+          <div className="animate-fade-up delay-300 preview-window" style={{ background: 'var(--bg-overlay)', border: '1px solid #30363d', borderRadius: 16, overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.6)', textAlign: 'left', maxWidth: 800, margin: '0 auto' }}>
 
             {/* Window chrome */}
-            <div style={{ padding: '12px 16px', borderBottom: '1px solid #21262d', display: 'flex', alignItems: 'center', gap: 8, background: '#1c2128' }}>
+            <div style={{ padding: '12px 16px', borderBottom: '1px solid #21262d', display: 'flex', alignItems: 'center', gap: 8, background: 'var(--bg-subtle)' }}>
               <div style={{ display: 'flex', gap: 6 }}>
                 <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#ff5f56' }} />
                 <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#ffbd2e' }} />
                 <div style={{ width: 12, height: 12, borderRadius: '50%', background: '#27c93f' }} />
               </div>
               <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
-                <div style={{ background: '#0d1117', border: '1px solid #30363d', borderRadius: 6, padding: '3px 16px', fontSize: 12, color: '#484f58', minWidth: 200, textAlign: 'center' }}>gitpulse.vercel.app/dashboard</div>
+                <div style={{ background: 'var(--bg-canvas)', border: '1px solid #30363d', borderRadius: 6, padding: '3px 16px', fontSize: 12, color: 'var(--fg-subtle)', minWidth: 200, textAlign: 'center' }}>gitpulse.vercel.app/dashboard</div>
               </div>
             </div>
 
@@ -124,17 +124,17 @@ export default function LoginPage() {
                   { label: 'Total Stars', value: '386', color: '#e3b341' },
                   { label: 'Followers', value: '219', color: '#bc8cff' },
                 ].map((s) => (
-                  <div key={s.label} style={{ background: '#0d1117', border: '1px solid #21262d', borderRadius: 10, padding: '14px 16px' }}>
+                  <div key={s.label} style={{ background: 'var(--bg-canvas)', border: '1px solid #21262d', borderRadius: 10, padding: '14px 16px' }}>
                     <div style={{ fontSize: 22, fontWeight: 700, color: s.color, letterSpacing: '-0.02em' }}>{s.value}</div>
-                    <div style={{ fontSize: 11, color: '#7d8590', marginTop: 3 }}>{s.label}</div>
+                    <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginTop: 3 }}>{s.label}</div>
                   </div>
                 ))}
               </div>
 
               {/* Heatmap */}
-              <div style={{ background: '#0d1117', border: '1px solid #21262d', borderRadius: 10, padding: '16px 18px', marginBottom: 12 }}>
+              <div style={{ background: 'var(--bg-canvas)', border: '1px solid #21262d', borderRadius: 10, padding: '16px 18px', marginBottom: 12 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                  <span style={{ fontSize: 13, fontWeight: 600, color: '#e6edf3' }}>Contribution Activity</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg-default)' }}>Contribution Activity</span>
                   <span style={{ fontSize: 12, color: '#3fb950' }}>1,847 contributions this year</span>
                 </div>
                 <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
@@ -146,25 +146,25 @@ export default function LoginPage() {
 
               {/* Bottom row */}
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                <div style={{ background: '#0d1117', border: '1px solid #21262d', borderRadius: 10, padding: '14px 16px' }}>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: '#7d8590', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Language Breakdown</div>
+                <div style={{ background: 'var(--bg-canvas)', border: '1px solid #21262d', borderRadius: 10, padding: '14px 16px' }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--fg-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Language Breakdown</div>
                   {[['TypeScript', '#3178c6', 68], ['Python', '#3572A5', 18], ['Go', '#00ADD8', 14]].map(([lang, color, pct]) => (
                     <div key={String(lang)} style={{ marginBottom: 8 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                           <div style={{ width: 8, height: 8, borderRadius: '50%', backgroundColor: String(color) }} />
-                          <span style={{ fontSize: 12, color: '#e6edf3' }}>{String(lang)}</span>
+                          <span style={{ fontSize: 12, color: 'var(--fg-default)' }}>{String(lang)}</span>
                         </div>
-                        <span style={{ fontSize: 11, color: '#7d8590' }}>{pct}%</span>
+                        <span style={{ fontSize: 11, color: 'var(--fg-muted)' }}>{pct}%</span>
                       </div>
-                      <div style={{ height: 4, background: '#21262d', borderRadius: 2, overflow: 'hidden' }}>
+                      <div style={{ height: 4, background: 'var(--border-muted)', borderRadius: 2, overflow: 'hidden' }}>
                         <div style={{ height: '100%', width: `${pct}%`, backgroundColor: String(color), borderRadius: 2 }} />
                       </div>
                     </div>
                   ))}
                 </div>
-                <div style={{ background: '#0d1117', border: '1px solid #21262d', borderRadius: 10, padding: '14px 16px' }}>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: '#7d8590', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Top Repositories</div>
+                <div style={{ background: 'var(--bg-canvas)', border: '1px solid #21262d', borderRadius: 10, padding: '14px 16px' }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--fg-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 12 }}>Top Repositories</div>
                   {[
                     { name: 'github-dashboard', stars: 142 },
                     { name: 'ml-experiments', stars: 98 },
@@ -183,7 +183,7 @@ export default function LoginPage() {
       </main>
 
       {/* ── Stats bar ──────────────── */}
-      <section style={{ borderTop: '1px solid #21262d', borderBottom: '1px solid #21262d', padding: '28px 24px', background: '#0d1117' }}>
+      <section style={{ borderTop: '1px solid #21262d', borderBottom: '1px solid #21262d', padding: '28px 24px', background: 'var(--bg-canvas)' }}>
         <div style={{ maxWidth: 900, margin: '0 auto', display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: 24 }}>
           {[
             { value: '100%', label: 'Free & Open Source' },
@@ -192,15 +192,15 @@ export default function LoginPage() {
             { value: 'Vercel', label: 'Edge-deployed globally' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center' }}>
-              <div style={{ fontSize: 20, fontWeight: 800, color: '#e6edf3', letterSpacing: '-0.02em', marginBottom: 4 }}>{s.value}</div>
-              <div style={{ fontSize: 12, color: '#7d8590' }}>{s.label}</div>
+              <div style={{ fontSize: 20, fontWeight: 800, color: 'var(--fg-default)', letterSpacing: '-0.02em', marginBottom: 4 }}>{s.value}</div>
+              <div style={{ fontSize: 12, color: 'var(--fg-muted)' }}>{s.label}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── Features section ──────────────── */}
-      <section id="features" style={{ padding: '96px 24px', background: '#0d1117' }}>
+      <section id="features" style={{ padding: '96px 24px', background: 'var(--bg-canvas)' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
 
           {/* Section header */}
@@ -208,20 +208,20 @@ export default function LoginPage() {
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
               <span className="badge badge-purple" style={{ fontSize: 12, padding: '4px 12px' }}>Features</span>
             </div>
-            <h2 style={{ fontSize: 36, fontWeight: 800, color: '#e6edf3', letterSpacing: '-0.03em', marginBottom: 12, lineHeight: 1.15 }}>
+            <h2 style={{ fontSize: 36, fontWeight: 800, color: 'var(--fg-default)', letterSpacing: '-0.03em', marginBottom: 12, lineHeight: 1.15 }}>
               Everything you need to understand
               <br />
               <span style={{ background: 'linear-gradient(135deg,#58a6ff,#bc8cff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                 your GitHub activity
               </span>
             </h2>
-            <p style={{ color: '#7d8590', fontSize: 16, maxWidth: 520, margin: '0 auto', lineHeight: 1.65 }}>
+            <p style={{ color: 'var(--fg-muted)', fontSize: 16, maxWidth: 520, margin: '0 auto', lineHeight: 1.65 }}>
               Built for developers who take their craft seriously. Real data, beautiful visualizations, zero fluff.
             </p>
           </div>
 
           {/* Feature grid — 3 cols on desktop, 2 on tablet, 1 on mobile */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: '#21262d', borderRadius: 20, overflow: 'hidden', border: '1px solid #21262d' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 1, background: 'var(--border-muted)', borderRadius: 20, overflow: 'hidden', border: '1px solid #21262d' }}>
             {[
               {
                 icon: (
@@ -310,7 +310,7 @@ export default function LoginPage() {
               },
             ].map((f, i) => (
               <div key={f.title} style={{
-                background: '#0d1117',
+                background: 'var(--bg-canvas)',
                 padding: '32px 28px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -318,8 +318,8 @@ export default function LoginPage() {
                 position: 'relative',
                 transition: 'background 0.2s',
               }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#161b22'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#0d1117'; }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-overlay)'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'var(--bg-canvas)'; }}
               >
                 {/* Top accent line on hover */}
                 <div style={{ position: 'absolute', top: 0, left: 28, right: 28, height: 1, background: `linear-gradient(90deg, transparent, ${f.color}40, transparent)` }} />
@@ -338,9 +338,9 @@ export default function LoginPage() {
                 {/* Text */}
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
-                    <h3 style={{ fontSize: 15, fontWeight: 700, color: '#e6edf3' }}>{f.title}</h3>
+                    <h3 style={{ fontSize: 15, fontWeight: 700, color: 'var(--fg-default)' }}>{f.title}</h3>
                   </div>
-                  <p style={{ fontSize: 13, color: '#7d8590', lineHeight: 1.6 }}>{f.desc}</p>
+                  <p style={{ fontSize: 13, color: 'var(--fg-muted)', lineHeight: 1.6 }}>{f.desc}</p>
                 </div>
 
                 {/* Tag */}
@@ -357,18 +357,18 @@ export default function LoginPage() {
 
           {/* Bottom CTA */}
           <div style={{ textAlign: 'center', marginTop: 56 }}>
-            <p style={{ color: '#7d8590', fontSize: 14, marginBottom: 20 }}>
+            <p style={{ color: 'var(--fg-muted)', fontSize: 14, marginBottom: 20 }}>
               Ready to see your GitHub story?
             </p>
             <button
               onClick={() => { if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               style={{
                 padding: '12px 28px', borderRadius: 10, border: '1px solid #30363d',
-                background: '#161b22', color: '#e6edf3', fontSize: 14, fontWeight: 500,
+                background: 'var(--bg-overlay)', color: 'var(--fg-default)', fontSize: 14, fontWeight: 500,
                 cursor: 'pointer', transition: 'all 0.15s',
               }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#58a6ff'; (e.currentTarget as HTMLElement).style.color = '#58a6ff'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#30363d'; (e.currentTarget as HTMLElement).style.color = '#e6edf3'; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--border-default)'; (e.currentTarget as HTMLElement).style.color = 'var(--fg-default)'; }}
             >
               ↑ Back to top
             </button>
@@ -395,11 +395,11 @@ export default function LoginPage() {
       <footer style={{ borderTop: '1px solid #21262d', padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <GithubIcon size={16} />
-          <span style={{ fontSize: 13, color: '#7d8590' }}>GitPulse · Built during 30-day internship</span>
+          <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>GitPulse · Built during 30-day internship</span>
         </div>
         <div style={{ display: 'flex', gap: 20 }}>
-          <a href="#" style={{ fontSize: 13, color: '#7d8590', textDecoration: 'none' }}>Privacy</a>
-          <a href="#" style={{ fontSize: 13, color: '#7d8590', textDecoration: 'none' }}>GitHub</a>
+          <a href="#" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Privacy</a>
+          <a href="#" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>GitHub</a>
         </div>
       </footer>
     </div>

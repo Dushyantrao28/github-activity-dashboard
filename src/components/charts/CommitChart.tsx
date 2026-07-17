@@ -9,8 +9,8 @@ const Tip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
     <div className="tooltip-dark">
-      <div style={{ fontSize: 11, color: '#7d8590', marginBottom: 4 }}>{label}</div>
-      <div style={{ fontSize: 15, fontWeight: 700, color: '#58a6ff' }}>{payload[0].value} <span style={{ fontSize: 11, color: '#7d8590', fontWeight: 400 }}>commits</span></div>
+      <div style={{ fontSize: 11, color: 'var(--fg-muted)', marginBottom: 4 }}>{label}</div>
+      <div style={{ fontSize: 15, fontWeight: 700, color: '#58a6ff' }}>{payload[0].value} <span style={{ fontSize: 11, color: 'var(--fg-muted)', fontWeight: 400 }}>commits</span></div>
     </div>
   );
 };
@@ -24,7 +24,7 @@ export function CommitChart({ data }: { data: CommitActivity[] }) {
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
         <div>
           <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>Commit Frequency</h2>
-          <p style={{ fontSize: 13, color: '#7d8590' }}>
+          <p style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
             <span style={{ color: '#58a6ff', fontWeight: 600 }}>{total}</span> commits · last 6 months
           </p>
         </div>
@@ -44,8 +44,8 @@ export function CommitChart({ data }: { data: CommitActivity[] }) {
         {t === 'bar' ? (
           <BarChart data={data} barCategoryGap="35%" barGap={2}>
             <CartesianGrid strokeDasharray="3 3" stroke="#21262d" vertical={false} />
-            <XAxis dataKey="week" tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
-            <YAxis tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
+            <XAxis dataKey="week" tick={{ fill: 'var(--fg-subtle)', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
+            <YAxis tick={{ fill: 'var(--fg-subtle)', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
             <Tooltip content={<Tip />} cursor={{ fill: 'rgba(88,166,255,0.05)' }} />
             <Bar dataKey="commits" fill="#1f6feb" radius={[4, 4, 0, 0]} />
           </BarChart>
@@ -58,8 +58,8 @@ export function CommitChart({ data }: { data: CommitActivity[] }) {
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#21262d" vertical={false} />
-            <XAxis dataKey="week" tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
-            <YAxis tick={{ fill: '#484f58', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
+            <XAxis dataKey="week" tick={{ fill: 'var(--fg-subtle)', fontSize: 10 }} axisLine={false} tickLine={false} interval={Math.floor(data.length / 7)} />
+            <YAxis tick={{ fill: 'var(--fg-subtle)', fontSize: 10 }} axisLine={false} tickLine={false} width={24} />
             <Tooltip content={<Tip />} />
             <Area type="monotone" dataKey="commits" stroke="#1f6feb" strokeWidth={2} fill="url(#cg)" dot={false} />
           </AreaChart>

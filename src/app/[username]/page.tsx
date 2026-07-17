@@ -27,7 +27,7 @@ export default function PublicProfilePage({ params }: { params: { username: stri
           <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 4 }}>
             @{target}&apos;s Profile
           </h1>
-          <p style={{ color: '#7d8590', fontSize: 14 }}>Public GitHub Activity Dashboard</p>
+          <p style={{ color: 'var(--fg-muted)', fontSize: 14 }}>Public GitHub Activity Dashboard</p>
         </div>
 
         {/* Profile + Stats */}
@@ -54,9 +54,9 @@ export default function PublicProfilePage({ params }: { params: { username: stri
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
             <div>
               <h2 style={{ fontSize: 16, fontWeight: 600 }}>Top Repositories</h2>
-              <p style={{ fontSize: 13, color: '#7d8590', marginTop: 2 }}>Sorted by stars, excluding forks</p>
+              <p style={{ fontSize: 13, color: 'var(--fg-muted)', marginTop: 2 }}>Sorted by stars, excluding forks</p>
             </div>
-            {repos && <span style={{ fontSize: 13, color: '#7d8590' }}>{repos.length} total</span>}
+            {repos && <span style={{ fontSize: 13, color: 'var(--fg-muted)' }}>{repos.length} total</span>}
           </div>
           {rL ? (
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 12 }}>

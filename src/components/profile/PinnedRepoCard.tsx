@@ -11,11 +11,11 @@ export function PinnedRepoCard({ repo }: { repo: GithubRepo }) {
       {/* Repo name */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8, marginBottom: 8 }}>
         <span style={{ fontSize: 14, fontWeight: 600, color: '#58a6ff', lineHeight: 1.3 }}>{repo.name}</span>
-        <ExternalLink size={12} style={{ color: '#484f58', flexShrink: 0, marginTop: 2 }} />
+        <ExternalLink size={12} style={{ color: 'var(--fg-subtle)', flexShrink: 0, marginTop: 2 }} />
       </div>
 
       {/* Description */}
-      <p style={{ fontSize: 12, color: '#7d8590', lineHeight: 1.5, flex: 1, marginBottom: 12,
+      <p style={{ fontSize: 12, color: 'var(--fg-muted)', lineHeight: 1.5, flex: 1, marginBottom: 12,
         display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
         {repo.description || 'No description provided.'}
       </p>
@@ -32,18 +32,18 @@ export function PinnedRepoCard({ repo }: { repo: GithubRepo }) {
       {/* Footer */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #21262d' }}>
         {repo.language && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#7d8590' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--fg-muted)' }}>
             <div style={{ width: 8, height: 8, borderRadius: '50%', background: getLanguageColor(repo.language) }} />
             {repo.language}
           </div>
         )}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: '#7d8590' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: 'var(--fg-muted)' }}>
           <Star size={11} /> {formatNumber(repo.stargazers_count)}
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: '#7d8590' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: 'var(--fg-muted)' }}>
           <GitFork size={11} /> {formatNumber(repo.forks_count)}
         </div>
-        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#484f58' }}>Updated {timeAgo(repo.updated_at)}</span>
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--fg-subtle)' }}>Updated {timeAgo(repo.updated_at)}</span>
       </div>
     </a>
   );

@@ -49,7 +49,7 @@ export default function ReposPage() {
       <div className="page-content">
         <div className="animate-fade-up" style={{ marginBottom: 24 }}>
           <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 4 }}>Repository Explorer</h1>
-          <p style={{ color: '#7d8590', fontSize: 14 }}>Browse, filter, and search all your public repositories</p>
+          <p style={{ color: 'var(--fg-muted)', fontSize: 14 }}>Browse, filter, and search all your public repositories</p>
         </div>
 
         <div style={{ marginBottom: 20 }}>

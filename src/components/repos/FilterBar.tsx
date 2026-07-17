@@ -19,8 +19,8 @@ const SORTS = [
 ];
 
 const selectStyle: React.CSSProperties = {
-  background: '#161b22', border: '1px solid #30363d', borderRadius: 8,
-  color: '#e6edf3', fontSize: 13, padding: '7px 30px 7px 12px',
+  background: 'var(--bg-overlay)', border: '1px solid #30363d', borderRadius: 8,
+  color: 'var(--fg-default)', fontSize: 13, padding: '7px 30px 7px 12px',
   outline: 'none', cursor: 'pointer', appearance: 'none', WebkitAppearance: 'none',
   backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237d8590' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`,
   backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center',
@@ -31,7 +31,7 @@ export function FilterBar({ search, onSearch, language, onLanguage, sort, onSort
   return (
     <div className="filter-bar" style={{ display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
       <div style={{ position: 'relative', flex: 1, minWidth: 200 }}>
-        <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: '#484f58', pointerEvents: 'none' }} />
+        <Search size={13} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--fg-subtle)', pointerEvents: 'none' }} />
         <input
           id="repo-search"
           className="input"
@@ -49,8 +49,8 @@ export function FilterBar({ search, onSearch, language, onLanguage, sort, onSort
       <select id="sort-select" value={sort} onChange={e => onSort(e.target.value)} style={selectStyle}>
         {SORTS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>
-      <span style={{ fontSize: 13, color: '#7d8590', whiteSpace: 'nowrap' }}>
-        <span style={{ color: '#e6edf3', fontWeight: 600 }}>{filteredCount}</span> / {totalCount} repos
+      <span style={{ fontSize: 13, color: 'var(--fg-muted)', whiteSpace: 'nowrap' }}>
+        <span style={{ color: 'var(--fg-default)', fontWeight: 600 }}>{filteredCount}</span> / {totalCount} repos
       </span>
     </div>
   );

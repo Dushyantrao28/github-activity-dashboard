@@ -4,7 +4,7 @@ import { useState } from 'react';
 import type { ContributionData } from '@/types/github';
 import { formatNumber } from '@/lib/utils';
 
-const LEVELS = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353'];
+const LEVELS = ['var(--bg-overlay)', '#0e4429', '#006d32', '#26a641', '#39d353'];
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 export function ContributionHeatmap({ data, username }: { data: ContributionData; username: string }) {
@@ -15,14 +15,14 @@ export function ContributionHeatmap({ data, username }: { data: ContributionData
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <div>
           <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: 4 }}>Contribution Activity</h2>
-          <p style={{ fontSize: 13, color: '#7d8590' }}>
+          <p style={{ fontSize: 13, color: 'var(--fg-muted)' }}>
             <span style={{ color: '#3fb950', fontWeight: 600 }}>{formatNumber(data.totalContributions)}</span> contributions in the last year
           </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 11, color: '#484f58' }}>Less</span>
+          <span style={{ fontSize: 11, color: 'var(--fg-subtle)' }}>Less</span>
           {LEVELS.map((c, i) => <div key={i} style={{ width: 12, height: 12, background: c, borderRadius: 3 }} />)}
-          <span style={{ fontSize: 11, color: '#484f58' }}>More</span>
+          <span style={{ fontSize: 11, color: 'var(--fg-subtle)' }}>More</span>
         </div>
       </div>
 
@@ -31,7 +31,7 @@ export function ContributionHeatmap({ data, username }: { data: ContributionData
           {/* Month labels */}
           <div style={{ display: 'flex', paddingLeft: 28, marginBottom: 4 }}>
             {data.weeks.filter((_, i) => i % 4 === 0).map((w, i) => (
-              <div key={i} style={{ flex: 1, fontSize: 10, color: '#484f58' }}>{MONTHS[new Date(w.firstDay).getMonth()]}</div>
+              <div key={i} style={{ flex: 1, fontSize: 10, color: 'var(--fg-subtle)' }}>{MONTHS[new Date(w.firstDay).getMonth()]}</div>
             ))}
           </div>
 
@@ -39,7 +39,7 @@ export function ContributionHeatmap({ data, username }: { data: ContributionData
             {/* Day labels */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 3, paddingRight: 4, paddingTop: 1 }}>
               {['', 'Mon', '', 'Wed', '', 'Fri', ''].map((d, i) => (
-                <div key={i} style={{ height: 12, fontSize: 9, color: '#484f58', lineHeight: '12px' }}>{d}</div>
+                <div key={i} style={{ height: 12, fontSize: 9, color: 'var(--fg-subtle)', lineHeight: '12px' }}>{d}</div>
               ))}
             </div>
             {/* Grid */}
@@ -60,8 +60,8 @@ export function ContributionHeatmap({ data, username }: { data: ContributionData
 
       {tip && (
         <div className="tooltip-dark" style={{ position: 'fixed', zIndex: 999, left: tip.x + 14, top: tip.y - 50, pointerEvents: 'none', whiteSpace: 'nowrap' }}>
-          <div style={{ fontWeight: 600, color: '#e6edf3' }}>{tip.count} contribution{tip.count !== 1 ? 's' : ''}</div>
-          <div style={{ color: '#7d8590', marginTop: 2 }}>{new Date(tip.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</div>
+          <div style={{ fontWeight: 600, color: 'var(--fg-default)' }}>{tip.count} contribution{tip.count !== 1 ? 's' : ''}</div>
+          <div style={{ color: 'var(--fg-muted)', marginTop: 2 }}>{new Date(tip.date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' })}</div>
         </div>
       )}
     </div>

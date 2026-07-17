@@ -41,7 +41,7 @@ export default function DashboardPage() {
           <h1 style={{ fontSize: 24, fontWeight: 700, letterSpacing: '-0.02em', marginBottom: 4 }}>
             Good day, <span style={{ color: '#58a6ff' }}>{firstName}</span> 👋
           </h1>
-          <p style={{ color: '#7d8590', fontSize: 14 }}>Overview of your GitHub activity and repository insights</p>
+          <p style={{ color: 'var(--fg-muted)', fontSize: 14 }}>Overview of your GitHub activity and repository insights</p>
         </div>
 
         {/* Profile + Stats — class handles responsive */}
@@ -76,7 +76,7 @@ export default function DashboardPage() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexWrap: 'wrap', gap: 10 }}>
             <div>
               <h2 style={{ fontSize: 16, fontWeight: 600 }}>Top Repositories</h2>
-              <p style={{ fontSize: 13, color: '#7d8590', marginTop: 2 }}>Sorted by star count</p>
+              <p style={{ fontSize: 13, color: 'var(--fg-muted)', marginTop: 2 }}>Sorted by star count</p>
             </div>
             <Link href="/repos" className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: 13, display: 'flex', alignItems: 'center', gap: 6 }}>
               View all <ArrowRight size={13} />

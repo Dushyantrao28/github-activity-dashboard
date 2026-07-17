@@ -14,10 +14,10 @@ export function RepoCard({ repo }: { repo: GithubRepo }) {
           {repo.archived && <span className="badge badge-orange" style={{ fontSize: 10, flexShrink: 0 }}>archived</span>}
           <span style={{ fontSize: 14, fontWeight: 600, color: '#58a6ff', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{repo.name}</span>
         </div>
-        <ExternalLink size={12} style={{ color: '#484f58', flexShrink: 0 }} />
+        <ExternalLink size={12} style={{ color: 'var(--fg-subtle)', flexShrink: 0 }} />
       </div>
 
-      <p style={{ fontSize: 12, color: '#7d8590', lineHeight: 1.5, flex: 1, marginBottom: 10,
+      <p style={{ fontSize: 12, color: 'var(--fg-muted)', lineHeight: 1.5, flex: 1, marginBottom: 10,
         display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
         {repo.description || 'No description provided.'}
       </p>
@@ -32,15 +32,15 @@ export function RepoCard({ repo }: { repo: GithubRepo }) {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, paddingTop: 10, borderTop: '1px solid #21262d' }}>
         {repo.language && (
-          <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: '#7d8590' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 11, color: 'var(--fg-muted)' }}>
             <span style={{ width: 8, height: 8, borderRadius: '50%', background: getLanguageColor(repo.language), display: 'inline-block' }} />
             {repo.language}
           </span>
         )}
-        <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: '#7d8590' }}><Star size={11} /> {formatNumber(repo.stargazers_count)}</span>
-        <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: '#7d8590' }}><GitFork size={11} /> {formatNumber(repo.forks_count)}</span>
-        {repo.open_issues_count > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: '#7d8590' }}><AlertCircle size={11} /> {repo.open_issues_count}</span>}
-        <span style={{ marginLeft: 'auto', fontSize: 11, color: '#484f58' }}>{timeAgo(repo.pushed_at)}</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: 'var(--fg-muted)' }}><Star size={11} /> {formatNumber(repo.stargazers_count)}</span>
+        <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: 'var(--fg-muted)' }}><GitFork size={11} /> {formatNumber(repo.forks_count)}</span>
+        {repo.open_issues_count > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: 'var(--fg-muted)' }}><AlertCircle size={11} /> {repo.open_issues_count}</span>}
+        <span style={{ marginLeft: 'auto', fontSize: 11, color: 'var(--fg-subtle)' }}>{timeAgo(repo.pushed_at)}</span>
       </div>
     </a>
   );
