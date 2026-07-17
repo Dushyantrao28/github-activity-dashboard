@@ -2,6 +2,7 @@
 
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { ContactSection } from '@/components/layout/ContactSection';
 
@@ -45,7 +46,7 @@ export default function LoginPage() {
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
           <a href="#features" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Features</a>
-          <a href="#" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Docs</a>
+          <Link href="/docs" style={{ fontSize: 13, color: 'var(--fg-muted)', textDecoration: 'none' }}>Docs</Link>
           <button
             onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
             className="btn btn-github"
