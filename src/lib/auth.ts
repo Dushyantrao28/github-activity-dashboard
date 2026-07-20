@@ -9,6 +9,7 @@ export const authOptions: NextAuthOptions = {
       authorization: {
         params: {
           scope: 'read:user user:email repo read:org',
+          prompt: 'select_account',
         },
       },
     }),
